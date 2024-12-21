@@ -1,0 +1,31 @@
+ #!/bin/sh
+
+. ./config_build nocheck
+. "$SCRIPTS"/misc/lib/lib_fail
+
+# No checking for USB ...
+
+TARG=initramfs
+RES=$TMPDIR/initramfs
+
+echo
+echo "-------------------------------------"
+echo " Making initramfs from '$TARG'  "
+echo "-------------------------------------"
+echo 
+
+# Make initramfs from custom booter. The initrd is phased out
+# so we are making a custom one for auto bootdrive search
+
+if [ ! -d $TARG ]; then
+    echo "No itramfs files"
+    exit
+fi
+
+chown -R root.root $TARG
+
+(cd $TARG; find . | cpio -o -H newc | gzip) > $RES
+echo
+
+
+

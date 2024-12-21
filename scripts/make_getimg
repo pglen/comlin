@@ -1,0 +1,67 @@
+#!/bin/sh
+##------------------------------------------------------------------------
+##                              
+## Copies USB drive to USB DD image
+##                                                                      
+## This program is free software; you can redistribute it and/or modify 
+## it under the terms of the GNU General Public License as published by 
+## the Free Software Foundation; either version 2 of the License, or    
+## (at your option) any later version.                                  
+##                                                                      
+##------------------------------------------------------------------------
+
+. ./config_build
+
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "----------------------------------"
+echo " Copying USB drive to USB dd image "
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# This is a temp drive, configure it for your system
+
+#TTT=/mnt/small/comlin/
+#TTT=/media/G120/comlin
+TTT=/mnt/down/comlin
+
+if [ ! -d $TTT ] ; then
+    echo "Target dir '$TTT' must exist." 
+    echo "Configure make_getimg script or create said dir."
+    echo
+    exit 1
+fi
+
+# Is the drive here?
+GREPX=`mount | grep $DDEV`
+
+if [ x"$GREPX" == x"" ] ; then 
+    echo "Mount (insert) $DDEV first."
+   	exit
+fi
+
+# Is the second drive here?
+GREPX=`mount | grep $DDEV2`
+
+if [ x"$GREPX" == x"" ] ; then 
+    echo "Mount (insert) $DDEV2 first."
+   	exit
+fi
+
+# Current version number
+DD=`pwd`
+VER=`basename $DD | awk -F '-' {'print $2'} |  sort -n | tail -1`
+
+DDFILE=$TTT/comlin-image16-$VER
+
+echo "Creating '$DDFILE'
+echo  Using device: '$RDDEV' ... (may take a while)"
+echo "You may want to disable power save for the duration of the copy."
+
+dd if=$RDDEV of=$DDFILE
+gzip $DDFILE
+
+echo Done.
+

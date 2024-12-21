@@ -51,9 +51,11 @@ help2:
 	@echo 
 	@echo "	 	make cycle       -- run putkern->syslinux->unmount"
 	@echo "	 	make getusb      -- get USB content back to project"
+	@echo "	 	make getusblite  -- get USB lite content back to project"
 	@echo "	 	make getusb2     -- update from USB content back to project"
 	@echo "	 	make copy        -- to mirror current system to USB (advanced)"
 	@echo "	 	make initrd      -- to make a new initrd (obsolete)"
+	@echo "	 	make initfs      -- to make a new initramfs"
 	@echo "	 	make putmods     -- Copy modules from build dir to USB"
 	@echo "	 	make refresh     -- Refresh kernel (System->Build_dir->USB)"
 	@echo "	 	make cpscripts   -- Copy COMLIN scripts to USB drive "
@@ -79,7 +81,10 @@ help3:
 	@echo "Preparation: (optional)"
 	@echo 
 	@echo "	 	make getmods    -- Copy modules from system into build dir"
+	@echo "	 	make getmods2   -- Copy modules from system into USB build dir"
 	@echo "	 	make getkern    -- Copy kernel from system into build dir"
+	@echo "	 	make getkern2   -- Copy kernel from system into USB dir"
+	@echo "	 	make clean      -- Remove tmp and work files"
 	@echo 
 	@echo "   For more information type 'make help4'"
 	@echo 	
@@ -100,6 +105,8 @@ help4:
 	@echo 	
 	@echo "The 'make doall2' target will not promp for confirmation. Mainly"
 	@echo "useful for scripts"	
+	@echo 	
+	@echo "	 	make getimg     -- Get COMLIN drive image"
 	@echo 	
 	@echo " *Warning! Make sure config_build:RDDEV points to a jump drive!" 
 	@echo "      !!!! Specifying the wrong drive will destroy data !!!! " 
@@ -124,8 +131,14 @@ new2:
 initrd:
 	@sudo ./scripts/make_initrd do
 
+initfs:
+	@sudo ./scripts/make_initramfs
+
 getusb:
 	@sudo ./scripts/make_getusb
+
+getusblite:
+	@sudo ./scripts/make_getusb_lite
 
 getusb2:
 	@sudo ./scripts/make_getusb -u
@@ -167,9 +180,17 @@ getkern:
 	@echo Getting new kernel
 	sudo ./scripts/make_getkern
 
+getkern2:
+	@echo Getting new kernel
+	sudo ./scripts/make_getkern2
+
 getmods:
 	@echo Getting new modules
 	sudo ./scripts/make_getmods
+
+getmods2:
+	@echo Getting new modules to USB build dir
+	sudo ./scripts/make_getmods2
 
 putmods:
 	@echo Putting new modules
@@ -194,6 +215,12 @@ backup:
 pack:
 	@sudo ./pack.sh
 
+clean:
+	@sudo ./clean.sh
+
+getimg:
+	@sudo ./scripts/make_getimg
+
 # ------------------------------------------------------------------------
 # Shortcuts for PG  letter -> dependency
 
@@ -208,4 +235,10 @@ b:	bigcycle
 a:	doall
 
 # End of Makefile
+
+
+
+
+
+
 

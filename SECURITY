@@ -1,0 +1,25 @@
+                            SECURITY
+                        
+    The initial setup contains two user accounts: 'root' and 'user'
+    
+        'root' pass is 'admin1234' (without the quotes)
+        'user' pass is 'user1234' (without the quotes)
+        
+    The encryption pass is '1234' (without the quotes)
+    The keychain pass is '1234' (without the quotes)
+
+    Make sure you change these passwords on first successful boot.
+
+    If you can, boot first without a network cable attached, and change the
+    passes before connecting to a network.
+
+    If you can, boot first without entering the WIFI password or your WIFI 
+    turned off, and change the passes before connecting to a network.
+    
+    Pass changing shortcuts are placed on the desktop for your convenience.
+    
+    Initially, the network is firewalled, with only some standard ports open.
+	(HTTP, SSH ...) You may enable more firewalled ports by editing the
+	firewall configuration.
+
+

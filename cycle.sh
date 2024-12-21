@@ -3,8 +3,17 @@
 # Executing full development / arcive / un-archive / drive creation cycle.
 # This is system specific, DO NOT USE WITHOUT CARE!
 # Expects a tmp dir and an already installed ComLin USB drive
+# Copyright by Peter Glen. See open source license for details.
 
-TTT=/mnt/small/comlin/
+. ./config_build
+
+# Configure this dir with al least 6 Gig space avalable.
+TTT=/mnt/down/comlin/
+
+HERE=`pwd`
+PROJ=`basename $HERE`
+TARGET=$1
+FF=${TARGET}/$PROJ.tar.gz
 
 if [ `id -u` != 0 ] ; then
     echo "Must be root to run this script."
@@ -20,36 +29,41 @@ if [ "$LLL" == "" ] ; then
 fi
 
 DDEV=`echo $LLL | awk  {'print $1'} | sed s/[0-9]//`
+CDEV=`cat config_drive | awk  -F '=' {'print $2'}`
 
-#echo "Device: '$DDEV'"
+#echo "Device: '$DDEV' '$CDEV'"
 
-# Current version number
-DD=`pwd`
-VER=`basename $DD | awk -F '-' {'print $2'} |  sort -n | tail -1`
-#echo "Version: '$VER'"
+if [ "$DDEV" != "$CDEV" ] ; then
+    echo "Config mismatch  $DDEV != $CDEV"
+    exit
+fi
 
 if [ ! -d $TTT ] ; then
     echo "Target dir '$TTT' must exist."
     exit 1
 fi
 
-echo "Packing to: '$TTT' "
+echo "Packing '$PROJ' to '$TTT' "
 
-rm -rf $TTT/*
+# Delete tar and unzipped dir so pack.sh will not complain
+rm -rf $TTT/comlin
+rm -f  $TTT/$PROJ.tar.gz
+
 ./pack.sh $TTT
 
-echo "Extracting comlin-$VER.tar.gz"
+echo "Extracting $PROJ.tar.gz"
 
 cd $TTT
-tar xfz comlin-$VER.tar.gz
+tar xfz $PROJ.tar.gz
 
-if [ ! -d comlin/comlin-$VER ] ; then
+if [ ! -d comlin/$PROJ ] ; then
     echo "Expected comlin dir (archive?)"
     exit
 fi
 
-cd comlin/comlin-$VER
-                                    
+cd comlin/$PROJ
+ 
+# Recreate                                                                       
 echo "RDDEV=$DDEV" > config_drive
 
 echo "Building new ComLin USB"
@@ -57,4 +71,6 @@ echo "Building new ComLin USB"
 make doall2
 
 echo "Done"
+
+
 

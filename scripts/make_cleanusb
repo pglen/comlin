@@ -10,7 +10,7 @@
 ##                                                                      
 ##------------------------------------------------------------------------
 
-. ./config_build
+. ./config_build  nocheck
 . "$SCRIPTS"/misc/lib/lib_fail
 
 TARG=/media/COMBOOT
@@ -27,4 +27,5 @@ find $CURRUSB -type s -exec rm -v {} \;
 find $CURRUSB -type p -exec rm -v {} \;
 
 sync
+
 

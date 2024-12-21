@@ -9,9 +9,11 @@ swapoff -a
 
 /bin/dbus-daemon --system  
 /usr/sbin/hald --daemon=yes 
-#/usr/sbin/hald --daemon=yes --verbose=yes --use-syslog
 eval `/usr/bin/dbus-launch --sh-syntax --exit-with-session`
 /usr/bin/gconftool-2 --spawn
+
+# Start LVM volumes
+/sbin/vgchange -a y --sysinit >/dev/null 2>&1
 
 # Stop disk activity on the main usb drive. 
 # This way, there is no constant disk activity for USB life preservation
@@ -22,4 +24,6 @@ udisks --inhibit-polling  $ROOTFS >/dev/null 2>&1 &
 #udisks --inhibit-all-polling  >/dev/null 2>&1 &
 
 echo OK
+
+
 

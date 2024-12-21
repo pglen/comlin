@@ -1,0 +1,18 @@
+kernel/lib/crc-itu-t.ko:
+kernel/drivers/scsi/device_handler/scsi_dh_emc.ko: kernel/drivers/scsi/device_handler/scsi_dh.ko
+kernel/drivers/scsi/device_handler/scsi_dh.ko:
+kernel/drivers/scsi/device_handler/scsi_dh_rdac.ko: kernel/drivers/scsi/device_handler/scsi_dh.ko
+kernel/drivers/mmc/core/mmc_core.ko:
+kernel/drivers/mmc/host/sdhci.ko: kernel/drivers/mmc/core/mmc_core.ko
+kernel/drivers/mmc/host/sdhci-pci.ko: kernel/drivers/mmc/host/sdhci.ko kernel/drivers/mmc/core/mmc_core.ko
+kernel/drivers/gpu/drm/ttm/ttm.ko:
+kernel/drivers/gpu/drm/radeon/radeon.ko: kernel/drivers/gpu/drm/ttm/ttm.ko kernel/drivers/gpu/drm/drm_kms_helper.ko
+kernel/drivers/gpu/drm/drm_kms_helper.ko:
+kernel/drivers/md/dm-log.ko:
+kernel/drivers/md/dm-region-hash.ko: kernel/drivers/md/dm-log.ko
+kernel/drivers/md/bcache/bcache.ko:
+kernel/drivers/md/dm-mirror.ko: kernel/drivers/md/dm-region-hash.ko kernel/drivers/md/dm-log.ko
+kernel/drivers/firewire/firewire-core.ko: kernel/lib/crc-itu-t.ko
+kernel/drivers/firewire/firewire-ohci.ko: kernel/drivers/firewire/firewire-core.ko kernel/lib/crc-itu-t.ko
+kernel/drivers/ata/pata_via.ko:
+kernel/drivers/ata/pata_acpi.ko:

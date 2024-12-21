@@ -1,0 +1,33 @@
+#!/bin/bash
+
+. ./config_build nocheck
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "--------------------------------------"
+echo " Getting new modules from SYS SRC dir "
+echo "--------------------------------------"
+echo 
+
+# Copy kernel files from runtime 
+# Enable this if you do not have sources and disable the source part below.
+
+REL=`uname -r`
+
+echo
+echo -n "Getting Modules from $REL to $CURRUSB " 
+
+# Copy modules from runtime
+mkdir -p $CURRUSB
+sudo cp -a /lib/modules/$REL/* $CURRUSB/lib/modules/$REL
+
+# Get PCI file from older kernel
+if [ -d /lib/modules/3.14.14 ] ; then
+    sudo cp -a /lib/modules/3.14.14/modules.pcimap $CURRUSB/lib/modules/$REL
+fi
+
+echo OK
+echo
+
+
+

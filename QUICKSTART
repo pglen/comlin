@@ -1,31 +1,53 @@
                                QUICKSTART
 
-  Unzip the archive to a directory. Make sure you unzip as root or sudo,
-so the extraction preserves permissions. (suids) Change to the newly created
-directory. (comlin/comlin-xxx [xxx being the version of the project])
+  If you downloaded the comlin_image16_xxx.tgz, unzip it to your hard drive.
+Insert your 16GB jump drive, and make note of its device. (use 'df' or 'mount')
+Execute the dd utility to duplicate te disk image onto your jump drive.
 
- Type 'make detect' (without the quotes), and follow the prompts. You may 
-need to insert your new jump drive in response to the prompts. The script 
+                               Warning!
+    ------------------------------------------------------------------
+    These instructions contain disk formatting and disk image creation 
+    operations.  It is the  responsibility of the  user (means you) to 
+    use these instructions with care. Misuse of these instructions may 
+                   destroy data. You have been warned.
+    ------------------------------------------------------------------
+        
+ Assuming comlin version is '016' and jump drive device is '/dev/sdd' issue 
+the command:
+
+      sudo dd if=comlin-image16-016 of=/dev/sdd
+
+  If you downloaded the comlin-xxx.tgz, unzip it to your hard drive. Make
+sure you unzip as root or as sudo, so the extraction preserves permissions.
+(suids) Change to the newly created  directory.
+(comlin/comlin-016 [016 being the version of the project])
+
+ Type 'make detect' (without the quotes), and follow the prompts. You may
+need to insert your new jump drive in response to the prompts. The script
 will establish which device is your USB jump drive.
 
+                ***********************************
+                
  Anything further formats drives, partitions etc .. exercise due care.
 
-  Type 'make new' to  partition and format the USB jump drive. When finished, 
-the script will prompt you to remove and reinsert the jump drive. 
+                ***********************************
+
+  Type 'make new' to  partition and format the USB jump drive. When finished,
+the script will prompt you to remove and reinsert the jump drive.
 
   Type 'make copyusb' to copy the Linux system files onto the jump drive. May
-take some time to shift several gigs of data. (Remember, it is a complete 
-system. [see Timings section for details]) When ready, type 'make syslin' 
-to install the bootable parts. 
+take some time to shift several gigs of data. (Remember, it is a complete
+system. [see Timings section for details]) When ready, type 'make syslin'
+to install the bootable parts.
 
-  Finally, type 'make unmount' and your jump drive is ready. 
+  Finally, type 'make unmount' and your jump drive is ready.
 
-  To boot a computer from a jump drive, set the BIOS for 'USB DOS'/ Emulation, 
+  To boot a computer from a jump drive, set the BIOS for 'USB DOS'/ Emulation,
 and set the 'Boot Device' to the USB drive. (Different BIOS-es use different
 wordings, so follow the instructions above loosely)
 
- Congratulations, you now have a low cost solid state computer, that works at 
-the same speed as a hard drive installation. (or faster) The USB drive is 
+ Congratulations, you now have a low cost solid state computer, that works at
+the same speed as a hard drive installation. (or faster) The USB drive is
 safe to use in any computer, as it does not mount anyhing without explicit
 request. It does however auto mount inserted removables. (CD, DVD, USB, FW)
 
@@ -34,19 +56,22 @@ request. It does however auto mount inserted removables. (CD, DVD, USB, FW)
   make detect  (and follow the propts)
   su root -c "make doall"
 
- Optionally, you can order a ready made jump drive. 
+ Optionally, you can order a ready made jump drive.
 See the SourceForge project page for details.
 
- Timings:  (on a 3GHz AMD)
+ Timings:  (on a 3GHz AMD K8)
 
  Unpacking the archive will run about 9 minutes
  Creating the jump drive will run about 31 Minutes
 
 To create a new distro:
 
- The pack.sh script will run about 17 minutes
- The 'make getusb' will run about xx minutes
+    The pack.sh script will run about 17 minutes
+    The 'make getusb' will run about 30 minutes
+    (Timings above where mesured with a 3Ghz AMD 1.5 Gig RAM)
 
     This project is funded by donations. Please consider donating
     on PayPal to the account of peterglen99@gmail.com.
+
+
 

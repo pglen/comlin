@@ -1,45 +1,45 @@
-Community Linux Public License Version 1.0
+            Community Linux Public License Version 1.0
 
-  THE  SOFTWARE IS  PROVIDED "AS IS", WITHOUT  WARRANTY OF ANY KIND, EXPRESS 
-  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY 
-  AND  FITNESS  FOR A  PARTICULAR  PURPOSE AND  NONINFRINGEMENT. IN NO EVENT 
-  SHALL THE  AUTHORS OR  COPYRIGHT  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES 
-  OR OTHER LIABILITY,  WHETHER IN AN ACTION OF  CONTRACT, TORT OR  OTHERWISE,  
-  ARISING  FROM, OUT OF OR  IN  CONNECTION  WITH THE  SOFTWARE OR THE USE OR 
+  THE  SOFTWARE IS  PROVIDED "AS IS", WITHOUT  WARRANTY OF ANY KIND, EXPRESS
+  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY
+  AND  FITNESS  FOR A  PARTICULAR  PURPOSE AND  NONINFRINGEMENT. IN NO EVENT
+  SHALL THE  AUTHORS OR  COPYRIGHT  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+  OR OTHER LIABILITY,  WHETHER IN AN ACTION OF  CONTRACT, TORT OR  OTHERWISE,
+  ARISING  FROM, OUT OF OR  IN  CONNECTION  WITH THE  SOFTWARE OR THE USE OR
   OTHER DEALINGS IN THE SOFTWARE.
 
 1. Definitions
 --------------
 
 	(a) "Contributor"
-		means each individual or legal entity that creates, contributes 
+		means each individual or legal entity that creates, contributes
 		tothe creation of, or owns Covered Software.
 
 	(b) "Contributor Version"
-		means the combination of the Contributions of others (if any) 
-		used by a Contributor and that particular Contributor's 
+		means the combination of the Contributions of others (if any)
+		used by a Contributor and that particular Contributor's
 		Contribution.
 
 	(c) "Contribution"
 		means Covered Software of a particular Contributor.
 
 	(d) "Covered Software"
-		means Source Code or Executable Form to which the initial 
-		Contributor has attached the notice in Exhibit A, the 
-		Executable Form of such Source Code Form, and Modifications 
-		of such Source Code Form, in each case including portions 
+		means Source Code or Executable Form to which the initial
+		Contributor has attached the notice in Exhibit A, the
+		Executable Form of such Source Code Form, and Modifications
+		of such Source Code Form, in each case including portions
 		thereof.
 
 	(e) "This Licence"
-		is a hybrid of several open sorce licences. The main intention 
-        is to permit the free use of this software without infringement 
+		is a hybrid of several open sorce licences. The main intention
+        is to permit the free use of this software without infringement
         on propriatory interests, giving the masses the greatest utility
         value possible.
 
 	(f) "Acceptance"
 		means the acceptance of the license which automatically takes
-        effect upon instalation or execution of this software. 
-        As execution takes place on booting from the jump drive, your 
+        effect upon instalation or execution of this software.
+        As execution takes place on booting from the jump drive, your
         acceptance takes effect as soon as you inserted the USB drive
         into a system that is capable to boot.
 
@@ -56,7 +56,7 @@ Community Linux Public License Version 1.0
     means any form of the work other than Source Code Form.
 
 1.7. "Larger Work"
-    means a work that combines Covered Software with other material, in 
+    means a work that combines Covered Software with other material, in
     a separate file or files, that is not Covered Software.
 
 1.8. "License"
@@ -386,9 +386,10 @@ file, then, You may include the notice in a location (such as a LICENSE
 file in a relevant directory) where a recipient would be likely to look
 for such a notice.
 
-Exhibit B - 
+Exhibit B -
 ------------
 
 You may add additional accurate notices of copyright ownership.
+
 
 

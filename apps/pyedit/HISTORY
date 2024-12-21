@@ -1,0 +1,45 @@
+                            HISTORY
+
+ This is a non exhaustive list of changes in the pyedit project.
+ 
+v003:
+    Misc
+v004:
+    Char add, nav, select
+v005:
+    Added find
+v006:
+    Added pos persistance, Added pane persistance    
+    Open, New, Save added
+v007:
+    Added undo / redo, Tab / sel tab
+    Autocomplete
+v008:
+   Cut / Paste
+v009:
+    Spell check
+v010:
+    Undo / Pedo
+v011:
+    Begun to use to edit the editor itself
+v012:
+    Install etc ...
+v013:
+    Converted gconf to sqlite
+v014:
+    Swap words, Cleanup
+v015:
+    Spell, Syntax check
+    
+v020:
+    
+v021:
+    Corrected TAB display
+    Search / Relpace backwards for correctness
+    Auto coloring off if not "c","py"
+
+
+
+
+
+

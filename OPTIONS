@@ -1,7 +1,7 @@
                      The BUILD and SYSTEM Options
 
- This was inherited from the parent project ... mostly true for COMLIN. Notable
-exceptoions is COMLIN does not download or update anything while in operation. 
+ This was inherited from the ancestor project ... mostly true for COMLIN. Notable
+exceptions is that COMLIN does not download or update anything while in operation. 
 
  See the actual config files for more info.
 
@@ -22,4 +22,6 @@ exceptoions is COMLIN does not download or update anything while in operation.
 
     This project is funded by donations. Please consider donating
     on PayPal to the account of peterglen99@gmail.com.
+
+
 

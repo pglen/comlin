@@ -1,0 +1,30 @@
+                          HISTORY
+                          
+Brief version information from development. For informational purposes only.                          
+
+Version     011     (and before) Hard at work creating a sane system.
+
+Version     012     Initial Release
+
+Version     013     Updated sound driver loading (now Intel HDA works)
+                    (Intel High Definition Audio)
+
+Version     013     Created Lite version. ComLin now fits on an 8GB USB
+                    drive. Removed: some locales, Java, Texi and such.
+                    The Lite version still has all the goodies like
+                    Openoffice, Firefox, Thunderbird Gimp ... etc ....
+
+Version     014     First release. (Source forge release.)
+
+Version     015     Added extra syslin command lines for second device.
+                    (SATA shows up before USB). Updated pangview for 
+                    Converted initramfs to custom dracut.
+                    Table driven pangview parser. Tested GL based utilities
+                    ... etc
+
+Version     016     Second release. (Source forge release.) Updated Boot
+                    process, Docs and version numbers in /etc/
+
+
+
+

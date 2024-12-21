@@ -10,6 +10,22 @@ echo " May need sudo pass ..."
 echo "----------------------------------"
 echo 
 
+# Get syslin's current initrd setting 
+SL=`grep initrd= syslinux/syslinux.cfg | head -n 1 | awk {'print $2'} | awk -F "/" {'print $2'}`
+
+if [  x"$SL" ==  x"" ] ; then
+	echo Configure syslin first. 
+	exit 1
+fi
+
+#echo "Using '$TMPDIR/$SL' as initramfs"
+
+if [  ! -f $TMPDIR/$SL ] ; then
+	echo Execute 'make initfs' first.
+        echo
+	exit
+fi
+
 # Make sure device is inserted
 if [ ! -b $RDDEV ] ; then
  	echo Insert drive into $RDDEV first
@@ -22,25 +38,10 @@ if [ x"$comlin" == x"" ] ; then
 	exit 1
 fi
 
-# Get syslin's current initrd setting 
-SL=`grep initrd= syslinux/syslinux.cfg | head -n 1 | awk {'print $2'} | awk -F "/" {'print $2'}`
-
-if [  x"$SL" ==  x"" ] ; then
-	echo Configure syslin first. 
-	exit 1
-fi
-
 if [ ! -f $MCOMBOOT/bin/bash ] ; then
 	echo "Execute 'make copyusb' first. "
 	exit 1
 fi 
-
-#echo "Using '$SL' as initrd"
-#
-#if [  ! -f $TMPDIR/$SL ] ; then
-#	echo Make INITRD first. 
-#	exit
-#fi
 
 if [ x"$1" == x"" ] ; then
    getkey -c 5  -m "Are you sure you want to install syslinux on \"$DDEV\" ? ctrl-c to abort " y
@@ -91,13 +92,13 @@ echo -n "Copying syslinux config ... "
 sudo cp -a syslinux $MCOMLIN
 echo OK
 
-# Get stock initrd
-echo -n "Copying initrd ... "
-#sudo cp  $TMPDIR/$SL $MCOMLIN
-sudo cp /boot/initramfs-`uname -r`.img $MCOMLIN/initrdfs
+# Get stock initramfs
+echo -n "Copying custom initramfs ... "
+sudo cp  $TMPDIR/$SL $MCOMLIN
+#sudo cp /boot/initramfs-`uname -r`.img $MCOMLIN/initrdfs
 echo OK
 
-echo -n "Copying boot scritps ... "
+echo -n "Copying boot scritpts ... "
 mkdir -p $MCOMBOOT/sh
 sudo cp  -a ./sh/*  $MCOMBOOT/sh
 echo OK
@@ -131,4 +132,6 @@ sudo syslinux --directory syslinux $DDEV
 echo OK
 
 exit 0
+
+
 

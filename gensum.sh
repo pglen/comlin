@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Create a new sum for the project
+# Copyright by Peter Glen. See open source license for details.
 
 TMPFILE=sha1.tmp
 
@@ -20,5 +21,6 @@ echo OK
 # The sumfile should also be checked against auxiliarry sources
 echo -n "Generating SUMFILE ... "
 shasum sha1.sum > SUMFILE
-echo OK
+echo Done Checksum.
+
 

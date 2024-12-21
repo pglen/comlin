@@ -1,9 +1,7 @@
 #!/bin/sh
-#############################################################################
-##                                                                         ##
-##                          Customize these options                        ##
-##                                                                         ##
-#############################################################################
+
+# Customize these options for comlin build.
+# Copyright by Peter Glen. See open source license for details.
 
 # root directory of the USB-set
 BASE=`pwd`
@@ -11,22 +9,25 @@ BASE=`pwd`
 # !IMPORTANT! make sure this is really the USB drive, otherwise you are
 # overwriting live data. You have been advised.
 
-if [ ! -f ./config_drive ] ; then
-	echo "USB drive not configured. Run 'make detect' first"
-	exit 1;
-fi
+# Skip check if instructed
+if [ "$1" != "nocheck" ] ; then
+    if [ ! -f ./config_drive ] ; then
+    	echo "USB drive not configured. Run 'make detect' first"
+    	exit 1;
+    fi
 
+    # This is the USB drive root for partitioning
+    . ./config_drive
 
-# This is the USB drive root for partitioning
-. ./config_drive
-
-if [ $RDDEV == "" ] ; then
-	echo "USB drive not configured."
-	exit 1;
+    if [ $RDDEV == "" ] ; then
+    	echo "USB drive not configured."
+    	exit 1;
+    fi
 fi
 
 # Where our USB data lives
 CURRUSB=../comlin-usb-000
+LITEUSB=../comlin-lite-000
 
 # This is the USB boot part
 DDEV=${RDDEV}1
@@ -52,14 +53,17 @@ SCRIPTS="scripts"
 
 # Temporary mount point
 MOUNTPOINT="_work/mnt"
+mkdir -p $MOUNTPOINT
 
 # Tempdir
 TMPDIR="_work/tmp"
+mkdir -p $TMPDIR
 
 # Backup of changed system files
 BACKUPDIR="_work/backup"
+mkdir -p $BACKUPDIR
 
-### Configure your scsi device
+### Configure your scsi device (not used)
 
 # The scsi device id, see man cdrecord
 SCSIDEV="0,0,0"
@@ -78,13 +82,13 @@ MCOMLIN=/media/COMLIN
 MCOMBOOT=/media/COMBOOT
 
 GREPX=`mount | grep /mnt/COMLIN`
-if [ x"$GREPX" != x"" ] ; then 
+if [ x"$GREPX" != x"" ] ; then
     #echo "Force override to /mnt/COMLIN"
    	MCOMLIN=/mnt/COMLIN
 fi
 
 GREPX=`mount | grep /mnt/COMBOOT`
-if [ x"$GREPX" != x"" ] ; then 
+if [ x"$GREPX" != x"" ] ; then
     #echo "Force override to /mnt/COMBOOT"
    	MCOMBOOT=/mnt/COMBOOT
 fi
@@ -180,4 +184,6 @@ CRAMFS="no"
 
 # which modules should we use.
 #DEBIAN_COMPONENTS="main contrib non-free"
+
+
 

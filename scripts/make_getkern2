@@ -1,0 +1,29 @@
+#!/bin/bash
+
+. ./config_build nocheck
+. "$SCRIPTS"/misc/lib/lib_fail
+
+REL=`uname -r`
+
+echo
+echo "-------------------------------------"
+echo " Getting new kernel from SYS USB dir "
+echo "--------------------------------------"
+echo 
+echo  "Getting kernel from $REL to $CURRUSB " 
+echo
+
+# Copy kernel files from runtime to USB
+# Enable this if you do not have sources and disable the source part below.
+
+mkdir -p $CURRUSB
+
+cp -v /boot/vmlinuz-$REL     $CURRUSB/vmlinuz
+cp -v /boot/System.map-$REL  $CURRUSB/System.map
+
+echo
+echo Done.
+echo
+
+
+

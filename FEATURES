@@ -1,0 +1,59 @@
+                               FEATURES
+                               
+ ComLin contains all the features of a full Linux installation. Text editors,
+Web Browsers, Compilers, Email Clients, Graphical authoring Tools, Security
+tools and utilities. In fact, ComLin can be used to publish a new version of
+ComLin.
+                                
+Runlevel-Less operation
+
+    To boot faster, and exclude unneeded baggage present on a full system,
+    ComLin Linux operates without the distinction of runlevels. The system
+    instead, cycles through a set of shell scripts.
+    To aid troubleshooting, checkpoints are introduced, and one can press
+    the ENTER key to temporarily drop to a shell prompt. Exiting the temporary
+    shell will continue the boot process from the point of interruption.
+
+Installation-Less operation
+
+    ComLin Linux should operate on most every hardware combination supported
+    by Linux. As of this writing, there are more then 3000+ different hardware
+    drivers / items supported. ComLin Linux detects hardware by reading the
+    system buses, and loading the drivers on the fly. Thanks to modern
+    hardware, the identification / driver loading is fast. The system boots
+    about the same speed or faster as a regular hard drive boot. ComLin works 
+    right out of the box without installation on most every PC.
+
+Special added Utilities
+
+    Some additional utils where necessary, and some existing utilities had
+    insufficient functionality. For example the 'getkey' utility did not work
+    correctly on the boot terminal. Hence, new utility was called upon, and
+    written that is simpler, and works on broken terminals. (Like the
+    initial boot terminal) We aptly named the utility 'keyget'. For a full
+    list of added utils see the source in ./apps directory.
+    (Luke; Use the source)
+
+Security Measures:
+
+    The files in the project are protected by an sha1 sum. The sums are stored
+    in the file "sha1.sum". The sum file is protected by the file SUMFILE.
+    Make sure the SUMFILE signature checks out as well. If you want to,
+    obtain a sum file from a  different source to make sure it is not
+    tempered with. (for example: the project page).
+    Executing ./checksum.sh should verify the project's integrity. Note that
+    the sum files themselves are not verifiable without the external
+    second verifyer. (chicken and egg conundrum) Hence the redirection to
+    get a sum file (or sum file sum) from different (not tempered) source.
+
+Data Security and Privacy Measures:
+
+    ComLin has an encrypted subsystem, that is controllable from the padlock
+    icon on the top panel. Click on the padlock icon, and select the
+    encrypted folder you wish to activate. You will be prompted for a
+    password, and the folder will become accessible. You may copy/save
+    any file in the encrypted folder,  it will be automatically encrypted.
+    The initial password is '1234' for the stock encrypted folder,
+    make sure you change it before deployment.
+
+    
