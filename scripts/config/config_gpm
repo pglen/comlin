@@ -1,0 +1,50 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## configure $ROOTFS/etc/gpm.conf                                       ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. config_system
+. "$SCRIPTS"/misc/lib/lib_fail
+
+if ! [ "$MOUSEPORT" ]; then
+    exit 0
+fi
+
+echo "----------------------------------"
+echo "      configuring gpm.conf        "
+echo "----------------------------------"
+echo 
+echo
+
+# backup the old gpm.conf
+cp $ROOTFS/etc/gpm.conf $BACKUPDIR/
+
+cat << EOF > "$ROOTFS"/etc/gpm.conf
+#  /etc/gpm.conf - configuration file for gpm(1)
+#
+#  If mouse response seems to be to slow, try using
+#  responsiveness=15. append can contain any random arguments to be
+#  appended to the commandline.
+#
+#  If you edit this file by hand, please be aware it is sourced by
+#  /etc/init.d/gpm and thus all shell meta characters must be
+#  protected from evaluation (i.e. by quoting them).
+#
+#  This file is used by /etc/init.d/gpm and can be modified by
+#  /usr/sbin/gpmconfig.
+#
+device=$MOUSEPORT
+responsiveness=$MOUSERESPONSIVENESS
+repeat_type=$MOUSEREPEATTYPE
+type=$MOUSETYPE
+append=$MOUSEAPPEND
+
+EOF

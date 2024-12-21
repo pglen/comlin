@@ -1,0 +1,10 @@
+                         README
+
+ This a replacement reboot utility for linux reboot. It was created fo the
+runlevel less operation, to bypass the authorization reqirement inherited 
+from the old runlevel systems.
+
+ The only requirement is that ./poweroff or ./reboot file exists. This is
+done to prevent accidental boot commands.
+
+

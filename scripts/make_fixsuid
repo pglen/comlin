@@ -1,0 +1,59 @@
+#!/bin/sh
+##------------------------------------------------------------------------
+##                              
+## Fixing SUID-s on USB drive
+##                                                                      
+## This program is free software; you can redistribute it and/or modify 
+## it under the terms of the GNU General Public License as published by 
+## the Free Software Foundation; either version 2 of the License, or    
+## (at your option) any later version.                                  
+##                                                                      
+##------------------------------------------------------------------------
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+TARG=/media/COMBOOT
+MCOMBOOT=/media/COMBOOT
+
+echo "$MCOMBOOT"
+
+echo
+echo "----------------------------------"
+echo " Copying USB image to USB drive "
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Is the drive here?
+GREPX=`mount | grep $DDEV`
+
+if [ x"$GREPX" == x"" ] ; then 
+    echo "Mount (insert) $DDEV first."
+   	exit
+fi
+
+# Is the second drive here?
+GREPX=`mount | grep $DDEV2`
+
+if [ x"$GREPX" == x"" ] ; then 
+    echo "Mount (insert) $DDEV2 first."
+   	exit
+fi
+
+echo "Fixing suids"
+
+for FF in `cat suids` ; do
+	FFF=`echo $FF | awk -F "/" {' for(aa=3; aa<=NF;aa++) { printf "/%s", $aa} '}`
+    #echo ${MCOMBOOT}$FFF
+	sudo chmod u+s ${MCOMBOOT}$FFF
+done
+
+echo "Fixing suid groups"
+
+for FF in `cat suidgr` ; do
+    FFF=`echo $FF | awk -F "/" {' for(aa=3; aa<=NF;aa++) { printf "/%s", $aa} '}`
+    #echo ${MCOMBOOT}$FFF
+	sudo chmod g+s ${MCOMBOOT}$FFF	
+done
+

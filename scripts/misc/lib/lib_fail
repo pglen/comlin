@@ -1,0 +1,42 @@
+# just to fail
+
+fail() {
+    echo -en "\a"; sleep 1; echo -en "\a"
+    echo "Something went wrong - aborting now !"
+
+    # cleaning up
+    #cd "$BASE"
+    echo "unmounting $MOUNTPOINT"
+    sudo umount "$MOUNTPOINT"
+
+    #echo "unmounting loop device ..."
+    #umount /dev/loop4
+    #echo "detaching loop device ..."
+    #losetup -d /dev/loop4
+
+    
+    if test -d $ROOTFS.compressed; then
+		# delete the compressed root
+		rm -r $ROOTFS.compressed
+    fi
+
+    if test -d $ROOTFS.uncompressed; then
+	# delete the compressed root fs and move the uncompressed 
+        # one to $ROOTFS
+	rm -r $ROOTFS
+        mv $ROOTFS.uncompressed $ROOTFS
+    fi
+
+    echo "cleaning $TMPDIR"
+    if test -d $TMPDIR/boot; then
+	mv $TMPDIR/boot $ROOTFS
+    fi
+    if test -d $TMPDIR/isolinux; then
+	mv $TMPDIR/isolinux $ROOTFS
+    fi
+    rm -rf "$TMPDIR"/*
+
+    echo
+    echo "aborted"
+    exit 1
+}

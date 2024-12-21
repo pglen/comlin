@@ -1,0 +1,35 @@
+diff -up beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Edit with gEdit.scripts-fixes beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Edit with gEdit
+--- beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Edit with gEdit.scripts-fixes	2013-06-18 11:20:46.000000000 -0600
++++ beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Edit with gEdit	2013-09-02 23:19:59.588613595 -0600
+@@ -4,7 +4,7 @@
+ then
+     quoted=$(echo -e "$NEMO_SCRIPT_SELECTED_FILE_PATHS" | 
+              awk 'BEGIN { FS = "\n" } { printf "\"%s\" ", $1 }' | sed -e s#\"\"##)
+-    beesu - gedit "$quoted"
++    beesu - 'unset XDG_RUNTIME_DIR ; gedit' "$quoted"
+ fi
+ # F12
+ /bin/true
+diff -up beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/GNOME Shell Open.scripts-fixes beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/GNOME Shell Open
+--- beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/GNOME Shell Open.scripts-fixes	2013-06-10 16:26:02.000000000 -0600
++++ beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/GNOME Shell Open	2013-09-25 20:02:13.874564366 -0600
+@@ -3,7 +3,7 @@
+ then
+     quoted=$(echo -e "$NEMO_SCRIPT_SELECTED_FILE_PATHS" | 
+              awk 'BEGIN { FS = "\n" } { printf "\"%s\" ", $1 }' | sed -e s#\"\"##)
+-    beesu - xdg-open "$quoted"
++    beesu - 'unset XDG_RUNTIME_DIR ; xdg-open' "$quoted"
+ fi
+ # F12
+ /bin/true
+diff -up beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Open Nemo Here.scripts-fixes beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Open Nemo Here
+--- beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Open Nemo Here.scripts-fixes	2013-06-18 11:21:52.000000000 -0600
++++ beesu-2.7/nemo-beesu-manager-1.8/libexec/scripts/Open Nemo Here	2013-09-25 20:03:02.745727411 -0600
+@@ -6,6 +6,6 @@
+      while [ ! -z "$1" -a ! -d "$base/$1" ]; do shift; done
+      dir="$base/$1"
+ fi
+-beesu - nemo "'$dir'"
++beesu - 'unset XDG_RUNTIME_DIR ; nemo' "'$dir'"
+ # F12
+ /bin/true

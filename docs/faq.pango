@@ -1,0 +1,63 @@
+<e><c><xxl><r>F</r>requently Asked Questions</xxl></c></e>
+<e><c><xxl><image name=pinguin.xpm align=center> <b>Community Linux</b>.\
+<image name=pinguin.xpm align=center></xxl></c></e>
+
+<c>\
+<link name=index.pango> [ <u>Index</u> ] </link> \
+<link name=install.pango> [ <u>Installation</u> ] </link>\
+<link name=faq.pango> [ <u>Troubleshooting</u> ] </link>\
+<link name=tech.pango> [ <u>Technical Details</u> ] </link>\
+<link name=create.pango> [ <u>Create ComLin Drive</u> ] </link>\
+</c>
+<j><w>
+
+ Community Linux is designed to run out of the box, but in case help is needed, please  refer to the following question and answer section:
+
+<i>What is Community Linux?</i>
+<m>
+ Is a Linux hard drive less distribution derived from CentOS 6.3; It boots and runs with comparable speed as hard drive installation.
+</m>
+<i>What Languages is Community Linux available?</i>
+<m>
+ It is available as many languages as Linux is available. The applications are available in as many languages as the translations for that application. Community Linux's international features are untested, please do not give feedback on it until the international version is released. Contributions are welcome.
+</m>
+<i>How do I download / create a new Community Linux USB drive?</i>
+<m>
+ You may download ComLin from Sourceforge.net. Extract the archive, and change to its directory. For further instructions read  the <a href=create.html>Create ComLin USB</a> page.
+</m>
+<i>What hardware does in run on?</i>
+<m>
+ ComLin will run on most commonly available hardware. At the time of writing, it compiled more than thee thousand  driver modules, to give access to an enormous range of hardware devices. If your hardware device is not supported, there is a large community support for solutions and/or patches.
+</m>
+<i>What do the boot time prompts mean?</i>
+<m>
+ During bootup ComLin will prompt you at different stages of boot for a key press. (with a timeout) Left alone, the distro will continue booting, but by pressing the enter key, the boot process can be suspended to a shell. This can be used as a troubleshooting tool. Prompt stages:
+
+<in>\
+a.) <i>Initrd</i> - Possible chkdisk. (*obsolete)
+b.) <i>Device Load</i> - For manual intervention on device load.
+c.) <i>Before Starting X</i> - To add X dependencies / drivers.
+d.) <i>Before Restarting X</i> - Choice to boot or Restart X.
+e.) <i>Before Reboot phase</i> - Choice drop to sh to examine the system 
+</in>
+ <i>Initrd</i> phase for possible chkdisk. (*obsolete) At this stage, one can repair the root filesystem of the USB drive by executing check disk. (fsck). ComLin already pre-configured a shell script to do this without investigating the root drive or any other detail. The shell script is named '/sh/check.sh'  (without the quotes) Exiting this shell will continue the boot process.
+
+ <i>Device Load</i> phase for manual intervention on device load. At this phase, one can load a device manually, of force the final script ahead of the start script queue. Exiting this shell will continue to load the drivers, and continue boot.
+
+ <i>Before Starting X</i> - To add X dependencies / drivers. This checkpoint allows one to look at system state before the graphical user interface starts. It is also possible to start other graphical interfaces or load missing dependencies or needed drivers. Exiting this shell will continue to load the graphical user interface.
+</m>
+<i>What is a zombie process?</i>
+<m>
+ Zombie is a process that is waiting for its parent to read its exit status. Processes in a Linux system are arranged in a parent-child hierarchy. When a parent dies before the child, it creates an orphan. When the orphan dies, there is no parent to read it's exit status, so it hangs around for some process to read it. The orphan then is re-parented by the system to the zombie collector, which reads its exit status, and voila! the zombie disappears. According to literature, a process leaving zombies behind is a bug. When we had no zombie collection, there was a lot of processes leaving zombies behind. Developers: Please take note. You can NOOP ComLin zombie collection to see what your program does.
+</m>
+<i>What support infrastructure does ComLin offer?</i>
+<m>
+ Community Linux is too new for those expectations. Please help, donate, volunteer.
+</m>
+ <b>Community Linux</b> is maintained by Peter Glen. The project is funded by donations, please consider contributing. Contributions are accepted on <r>Paypal;</r> account: <i>peterglen99@gmail.com</i>
+</w></j>
+<c>The <b>'ComLin'</b> and <b>'Community Linux'</b> names are Copyright Peter Glen.<sm>
+</sm>\
+<i>This document is displayed by the pangview utility.</i>
+</c>
+

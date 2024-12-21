@@ -1,0 +1,45 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## Burn the cd                                                          ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo "Preparing ISO image/burning ....  "
+
+# // Create the file RESCUECD to identify the rescue cd
+touch $ROOTFS/space-cd                 || fail
+
+# // Create directories that are expected to be there
+
+mkdir $ROOTFS/mnt/cdrom.iso     2>/dev/null
+mkdir $ROOTFS/mnt/cdrom         2>/dev/null
+mkdir $ROOTFS/mnt/disk          2>/dev/null
+mkdir $ROOTFS/mnt/guest         2>/dev/null
+mkdir $ROOTFS/mnt/ramfs         2>/dev/null
+mkdir $ROOTFS/initrd            2>/dev/null
+
+# // Create the cd, either burn it or create just the image
+
+if [ $ISOIMAGEONLY = "yes" ]; then
+    mkisofs -V "Space-V1" $Z -R -J -b isolinux/isolinux.bin \
+    -c isolinux/boot.cat -no-emul-boot \
+    -boot-load-size 4 -boot-info-table $ROOTFS > \
+    spacecd.iso || fail
+else
+    mkisofs -V "Space-V1" $Z -R  -J -b isolinux/isolinux.bin \
+    -c isolinux/boot.cat -no-emul-boot \
+    -boot-load-size 4 -boot-info-table $ROOTFS |  \
+        cdrecord -eject $SCSIBLANK dev=$SCSIDEV speed=$SCSISPEED - || fail
+fi
+
+echo
+

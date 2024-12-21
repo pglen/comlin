@@ -1,0 +1,70 @@
+<e><c><xxl>Create a new ComLin Drive</xxl></c></e>
+<e><c><xxl><image name=pinguin.xpm align=center> <b>Community Linux</b>.\
+<image name=pinguin.xpm align=center></xxl></c></e>
+<c>
+<link name=index.pango> [ <u>Index</u> ] </link> \
+<link name=install.pango> [ <u>Installation</u> ] </link>\
+<link name=faq.pango> [ <u>Troubleshooting</u> ] </link>\
+<link name=tech.pango> [ <u>Technical Details</u> ] </link>\
+<link name=create.pango> [ <u>Create ComLin Drive</u> ] </link>\
+</c>
+<j><w>
+ After you have downloaded the Community Linux (ComLin) archive from Sourceforge.net, or any of the archives, extract it, and change to its directory. The archive has two main sections: 
+</w></j><in>
+    a.) <i>The USB Image Files</i>
+    b.) <i>ComLin Boot Drive Creation Scripts</i>
+</in>\
+<j><w>
+<r> Warning!</r> The ComLin USB Boot Drive Creation Scripts may format partitions and / or erase data if misused. Use it with extreme caution. You have been warned. 
+
+  Most systems require a sudo password to execute utilities like 'fdisk' and 'mkfs'. If your system admin did not give you a sudo pass, there is a reason. Just in case it is not clear, issuing a command is your action, your responsibility. If the steps outlined below sound intimidating, you can order a jump drive pre-configured. Visit the <e>SourceForge Community Linux Project</e> Page for details.
+
+<b>System requirements:</b>
+
+  Community Linux requires a running Linux system to be able to create a new ComLin USB Boot Drive. Any distribution will work, and if you have no running Linux installation most live/rescue CDROM-s or DVD-s will suffice. Additionally, ComLin requires a 16 Gig (or larger) USB drive or commonly called jump drive. ComLin would fit onto a smaller device, leaving little room for actual work. 
+A new ComLin can be created from an existing ComLin USB drive by using the 'dd' utility. The ComLin system also contains a self replication script. You need a second USB drive and a system that has two USB ports. (most systems do)
+
+<b>Installation:</b>
+
+  Community Linux installs in several easy steps. It is driven by a central Makefile, you can type 'make' (no quotes) at the command line to see the creation targets. Some steps require a sudo pass.
+
+<b>Preparation:</b>
+
+  Make sure the jump drive is not inserted. Start 'make detect' (no quotes) 
+  Insert a jump drive into a USB slot, wait for the automount to mount it. (If any partitions are present) 
+<m>  
+  The script will wait for the device to appear, and will make note of it in the configuration file (config_drive) This is not 100% foolproof, so make sure the jump drive is the only one inserted and no other spurious activities occur. Unmount all the jump drive mounts, either from the command line or from the file manager. Some systems use the terminology 'eject'.
+</m>
+<b>Formatting /Partitioning:</b>
+
+  We are now ready to format/partition the jump drive with the 'make new' call. This script partitions the drive into two partitions, one FAT partition and one ext(4) partition.<link name=tech.pango>(see: tech for notes on that)</link>. The FAT partition is used as a system boot, the ext(4) partition as the system root and data. Once the script is finished, remove the jump drive, than re-insert. Wait for the automount to complete, you should see two drives appearing with the labels COMLIN and COMBOOT.
+
+<b>Copying the system data files:</b>
+
+  This step copies the system data onto the jump drive with the 'make copyusb' call. This script creates the final directory structure for the target system, copies user files and configuration. Several gigabytes of data are copied, dependent of your system speed, this may take a while.
+
+<b>Making the USB drive bootable:</b>
+
+  The final step creates the bootable part of the ComLin system with 'make cycle' call. The name originates from the fact, that during development, this encompassed the system development cycle. The scrips also copies the additional tools and utilities we developed to make the system workable. The script also unmounts the drives, ready to be used. Congratulations! You just created a Community Linux Jump Drive.
+
+<b>Odds and ends:</b>
+
+  The 'make cycle' consists of three sub-steps, which may be executed separately. 
+    The steps are: 
+<m>
+        a.) 'make copykern' - which copies the kernel to the USB drive 
+        b.) 'make syslin' - which installs the syslinux boot sector 
+        c.) 'make umount' which un-mounts the USB drive(s).
+</m>
+<b>To the bold and courageous:</b>
+
+  One may create a Community Linux distribution from any running system. Take a look at the script 'make copy'. This is an advanced operation, one needs to be a seasoned system administrator to do that. There are far too many options to migrate, user accounts to tweak, GUI parameters to adjust, servers to start etc ... I am sharing those scripts, as that is how ComLin was created in the first place. 
+    If you create a special ComLin distro, please share it with us on our project page.
+
+ <b>Community Linux</b> is maintained by Peter Glen. The project is funded by donations, please consider contributing. Contributions are accepted on <r>Paypal;</r> account: <i>peterglen99@gmail.com</i>
+</w></j>
+<c>The <b>'ComLin'</b> and <b>'Community Linux'</b> names are Copyright Peter Glen.<sm>
+</sm>\
+<i>This document is displayed by the pangview utility.</i>
+</c>
+

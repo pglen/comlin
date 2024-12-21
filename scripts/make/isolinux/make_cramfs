@@ -1,0 +1,42 @@
+#!/bin/sh
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+if [ "$CRAMFS" != "yes" ]; then
+	exit 0
+fi
+
+if [ "$COMPRESSEDFS" = "yes" ]; then
+	echo "Only one of COMPRESSEDFS and CRAMFS can be set to yes."
+	fail
+fi
+
+echo "Building the cramfs image     "
+
+# first copy the _cd tree to $TMPDIR
+mkdir $TMPDIR/_cd           || fail
+mkdir $TMPDIR/iso           || fail
+mkdir $TMPDIR/iso/boot      || fail
+mkdir $TMPDIR/iso/isolinux  || fail
+cp -a $ROOTFS/* $TMPDIR/_cd || fail
+
+# delete some files that are already copied to the ramdisk image
+rm -rf $TMPDIR/_cd/dev/*         || fail
+rm -rf $TMPDIR/_cd/var/*         || fail
+rm -rf $TMPDIR/_cd/isolinux/*    || fail
+
+cp $TMPDIR/_cd/README $TMPDIR/iso || fail
+
+# now build the cramfs image file
+mkcramfs $TMPDIR/_cd $TMPDIR/iso/boot/rootfs.cramfs.img
+
+cp -a $ROOTFS/isolinux/* $TMPDIR/iso/isolinux || fail
+
+mv $ROOTFS $ROOTFS.uncompressed || fail
+mv $TMPDIR/iso $ROOTFS          || fail
+
+# clean up
+rm -rf $TMPDIR/_cd || fail
+
+echo

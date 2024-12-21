@@ -1,0 +1,49 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## compress the root system                                             ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+if [ "$COMPRESSEDFS" != "yes" ]; then
+    exit 0
+fi
+
+if [ "$CRAMFS" = "yes" ]; then
+	echo "Only one of COMPRESSEDFS and CRAMFS can be set to yes." 
+	fail
+fi
+
+echo "----------------------------------"
+echo "     compressing the rootfs       "
+echo "----------------------------------"
+echo 
+echo
+
+
+echo "This can take some time ... "
+
+# if we use a compressed ISO9660 image prepare the system
+# it's a dirty hack, i know
+mkzftree $ROOTFS $ROOTFS.compressed || fail
+cp $ROOTFS/boot/boot.img $ROOTFS.compressed/boot/boot.img || fail
+
+# $ROOTFS should contain the compressed tree, so let's switch
+# $ROOTFS.compressed to $ROOTFS and move the uncompressed one
+# to $ROOTFS.uncompressed
+mv $ROOTFS $ROOTFS.uncompressed || fail
+mv $ROOTFS.compressed $ROOTFS || fail
+
+# delete some files that are already copied to the ramdisk image
+rm -rf $ROOTFS/dev/* || fail
+rm -rf $ROOTFS/var/* || fail
+
+echo

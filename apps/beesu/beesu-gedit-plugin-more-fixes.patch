@@ -1,0 +1,56 @@
+diff -up beesu-2.7/gedit-beesu-plugin-0.4/beesu.gedit-plugin.more-fixes beesu-2.7/gedit-beesu-plugin-0.4/beesu.gedit-plugin
+--- beesu-2.7/gedit-beesu-plugin-0.4/beesu.gedit-plugin.more-fixes	2013-06-25 12:06:35.595816030 -0400
++++ beesu-2.7/gedit-beesu-plugin-0.4/beesu.gedit-plugin	2013-06-25 12:07:06.742816497 -0400
+@@ -1,7 +1,7 @@
+ [Plugin]
+-Loader=python
++Loader=python3
+ Module=beesu
+-IAge=2
++IAge=3
+ Name=Open as root
+ Description=Reopen a document as root
+ Authors=Bee at the HONEY BEE NET - http://honeybeenet.altervista.org
+diff -up beesu-2.7/gedit-beesu-plugin-0.4/beesu/__init__.py.more-fixes beesu-2.7/gedit-beesu-plugin-0.4/beesu/__init__.py
+--- beesu-2.7/gedit-beesu-plugin-0.4/beesu/__init__.py.more-fixes	2013-06-25 12:09:56.847819050 -0400
++++ beesu-2.7/gedit-beesu-plugin-0.4/beesu/__init__.py	2013-06-25 12:10:01.072819113 -0400
+@@ -1 +1 @@
+-from beesu import beesuPlugin
++from .beesu import beesuPlugin
+diff -up beesu-2.7/gedit-beesu-plugin-0.4/beesu.py.more-fixes beesu-2.7/gedit-beesu-plugin-0.4/beesu.py
+--- beesu-2.7/gedit-beesu-plugin-0.4/beesu.py.more-fixes	2013-06-25 12:08:53.705818102 -0400
++++ beesu-2.7/gedit-beesu-plugin-0.4/beesu.py	2013-06-25 12:08:57.802818164 -0400
+@@ -1,5 +1,6 @@
+ # 2010 - Copyright by Bee <http://www.honeybeenet.altervista.org>.
+ # 2012 - Rewritten to work with modern Gedit by Tom Callaway <spot@fedoraproject.org>
++# 2013 - Rewritten slightly for compatibility with Gedit 3.8 by D. Charles Pyle <dcharlespyle@msn.com>.
+ # This program is free software; you can redistribute it and/or
+ # modify it under the terms of the GNU General Public License
+ # as published by the Free Software Foundation; either version 2
+@@ -117,11 +118,11 @@ class beesuPlugin(GObject.Object, Gedit.
+         #shell_args = [SED_BEESU_COMMAND_LINE_SU,'/usr/libexec/gedit-beesu-plugin','gedit-beesu-plugin','gedit','gedit',lockfile]
+         if filename != None and filename != '':
+             # shell_args = ['beesu', '-l', '-c', '\"/usr/bin/gedit %s\"' % filename]
+-            shell_args = ['beesu', '-l', '-c', '/usr/libexec/gedit-beesu-plugin','gedit-beesu-plugin','gedit','gedit',lockfile, filename]
++            shell_args = ['beesu','-l','-c','unset','XDG_RUNTIME_DIR',';','/usr/libexec/gedit-beesu-plugin','gedit-beesu-plugin','/usr/bin/gedit','gedit',lockfile,'\"%s\"' %filename]
+             # shell_args = ['/usr/libexec/gedit-beesu-plugin','gedit-beesu-plugin','gedit','gedit', lockfile, filename]
+         else:
+            return False
+-        print shell_args
++        print(str(shell_args))
+         try:
+             subprocess.Popen(shell_args, stderr=open(os.devnull)).wait()
+         except:
+@@ -132,7 +133,11 @@ class beesuPlugin(GObject.Object, Gedit.
+             self.error_message(_(myerror))
+             return False
+ 
+-        print 'Hey, it says the Popen succeeded.'
++        print('Hey, it says the Popen succeeded.')
++        # Added for additional debugging information.
++        #
++        print("The file worked on by beesu was: " + filename)
++        print("The shell_args passed to execvp() were: " + str(shell_args))
+ 
+         if os.path.isfile(lockfile):
+             os.remove(lockfile)

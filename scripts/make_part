@@ -1,0 +1,85 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+# Test for dependency
+
+MBR=/usr/share/syslinux/mbr.bin
+
+if [ ! -f $MBR ] ; then 
+	echo "Syslinux is not installed, using cached copy of MBR"
+	MBR=scripts/misc/mbr.bin
+fi
+
+# The size of the MSDOS partition
+MSDOSX=16
+
+echo
+echo "----------------------------------"
+echo " Creating USB Drive Partitions"
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit 1
+fi
+
+if [ x"$1" == x"" ] ; then
+ getkey -c 5  -m "Are you sure you want to fdisk \"$RDDEV\" ? y or ctrl-c to abort " y
+
+ if [ $? != 0 ] ; then 
+	echo
+	exit 1; 
+ fi
+ echo
+fi
+
+MMM=`echo $MM | grep "/ "`
+echo $MMM
+if [ x"" != x"$MMM" ] ; then
+    echo "Refusing to operate on partition that is mounted on / "
+    exit 1
+fi
+
+for AA in "/mnt" "/boot" "/home" "/usr" "/var"; do
+    checkMnt $AA
+done
+
+# Make sure they are not mounted
+sudo umount $DDEV
+sudo umount $DDEV2 &2>&1 >/dev/null
+
+# 3840 => 255 sectors x 16 heads
+size=`sudo sfdisk -s $RDDEV`
+tracks=$(($size/3840-1))
+tracks2=$(($tracks-$MSDOSX))
+# Create new partition 
+
+echo fdiskin\' dev=$RDDEV  size=$tracks $tracks2
+
+# Install new master boot record ....
+sudo dd if=$MBR of=$RDDEV
+
+# One MSDOS partition
+#sudo sfdisk -D $RDDEV <<EOF
+#,,c,*
+#;
+#;
+#;
+#EOF
+
+# Two partitions ... MSDOS and LINUX EXT[234]
+sudo sfdisk -D $RDDEV <<EOF
+,$MSDOSX,c,*
+,,L
+;
+;
+EOF
+
+sudo sync 
+sudo partprobe $RDDEV
+

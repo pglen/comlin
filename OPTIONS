@@ -1,0 +1,25 @@
+                     The BUILD and SYSTEM Options
+
+ This was inherited from the parent project ... mostly true for COMLIN. Notable
+exceptoions is COMLIN does not download or update anything while in operation. 
+
+ See the actual config files for more info.
+
+    a.) config_build file
+
+        Configure here everything related to the building process.
+    
+    b.) config_drive file
+    
+        The USB drive you are working with. Use 'make detect' to create it.
+        see config_drive.sample for the format of the file
+
+    c.) config_system file
+
+        Configure here everything related to the actual system. Most of these
+        settings are ignored, edit the actual files in the ../comlin-usb-xxx 
+        subdirectory or on the host system.
+
+    This project is funded by donations. Please consider donating
+    on PayPal to the account of peterglen99@gmail.com.
+

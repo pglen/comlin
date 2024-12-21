@@ -1,0 +1,21 @@
+<e><c><xxl><r>F</r>requently Asked Questions</xxl></c></e>
+<e><c><xxl><image name=pinguin.xpm align=center> <b>Community Linux</b>.\
+<image name=pinguin.xpm align=center></xxl></c></e>
+
+<c>\
+<link name=index.pango> [ <u>Index</u> ] </link> \
+<link name=install.pango> [ <u>Installation</u> ] </link>\
+<link name=faq.pango> [ <u>Troubleshooting</u> ] </link>\
+<link name=tech.pango> [ <u>Technical Details</u> ] </link>\
+<link name=create.pango> [ <u>Create ComLin Drive</u> ] </link>\
+</c>
+<j><w>
+
+
+ <b>Community Linux</b> is maintained by Peter Glen. The project is funded by donations, please consider contributing. Contributions are accepted on <r>Paypal;</r> account: <i>peterglen99@gmail.com</i>
+</w></j>
+<c>The <b>'ComLin'</b> and <b>'Community Linux'</b> names are Copyright Peter Glen.<sm>
+</sm>\
+<i>This document is displayed by the pangview utility.</i>
+</c>
+

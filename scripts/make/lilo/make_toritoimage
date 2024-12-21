@@ -1,0 +1,79 @@
+#!/bin/sh
+###############################################################################
+##                                                                           ##
+##                            make_toritoimage                               ##
+##                                                                           ##
+## This script takes the directory structure of _initrdfs/ (which represents ##
+## the initial ramdisk initrd), gzips it and copies it on a floppy disk      ##
+## mage. Then it runs lilo and writes the floppy image to                    ##
+## $ROOTFS/boot/boot.img.                                                    ##
+## The Floppy image should then be a fully functional el torito boot image.  ##
+##                                                                           ##
+## This program is free software; you can redistribute it and/or modify      ##
+## it under the terms of the GNU General Public License as published by      ##
+## the Free Software Foundation; either version 2 of the License, or         ##
+## (at your option) any later version.                                       ##
+##                                                                           ##
+###############################################################################
+
+. config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo "----------------------------------"
+echo "    creating boot floppy image    " 
+echo "             lilo                 "
+echo "----------------------------------"
+echo 
+echo
+
+# this is here to override the FLOPPYSIZE parameter at runtime without
+# the need of changing the config file.
+# it's used by the utils/make_boot_disk script
+if [ "$1" = 144 -o "$1" = 288 -o "$1" = 1722 ]; then
+    FLOPPYSIZE=$1
+fi
+
+## lilofs
+# create zeroed image file and make a filesystem
+cp "$SCRIPTS"/misc/files/lilo_"$FLOPPYSIZE".img.gz $TMPDIR/lilofs.gz || fail
+gunzip -f $TMPDIR/lilofs.gz || fail
+
+# mount it on $MOUNTPOINT
+losetup /dev/loop4 $TMPDIR/lilofs  || fail
+mount /dev/loop4 $MOUNTPOINT  || fail
+
+# building lilo.conf
+if [ "$CRAMFS" = "yes" ]; then
+	cat "$SCRIPTS"/misc/files/lilo_"$FLOPPYSIZE".conf \
+		| sed "s|RAMSIZE|$RAMSIZE|;s|CRAMFS|cramfs|"  \
+		> $MOUNTPOINT/lilo.conf || fail
+else
+	cat "$SCRIPTS"/misc/files/lilo_"$FLOPPYSIZE".conf \
+		| sed "s|RAMSIZE|$RAMSIZE|;s|CRAMFS||"        \
+		> $MOUNTPOINT/lilo.conf || fail
+fi
+
+# move compressed initrdfs onto lilofs image
+mv $TMPDIR/initrdfs.gz $MOUNTPOINT || fail
+
+# copy kernel onto lilofs image
+cp "$KERNEL"/vmlinuz $MOUNTPOINT || fail
+
+# copy the boot time message onto the lilofs image
+cp $SCRIPTS/misc/files/message.txt $MOUNTPOINT || fail
+
+# copy memtest86 image onto lilofs image
+cp "$SCRIPTS"/misc/files/memtest86.bin $MOUNTPOINT/memtest.86 || fail
+
+## Now we need to set up lilo
+OLDPWD=$PWD
+cd $MOUNTPOINT
+$BASE/$SCRIPTS/misc/tools/lilo -v -c -C lilo.conf || fail
+cd $OLDPWD
+
+# umount lilofs
+umount $MOUNTPOINT
+losetup -d /dev/loop4
+
+# move lilofs image to BURN_THIS/boot/boot.img
+mv $TMPDIR/lilofs $ROOTFS/boot/boot.img

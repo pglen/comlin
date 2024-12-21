@@ -1,0 +1,85 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+##     encrypts $PASSWD with md5 and sets the encrypted passwd          ##
+##     in $ROOTFSLOC/etc/passwd                                         ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. config_system
+. $SCRIPTS/misc/lib/lib_fail
+
+
+echo "----------------------------------"
+echo "      configuring /etc/passwd     "
+echo "----------------------------------"
+echo 
+echo
+
+# crypt() only accepts [a-zA-Z0-9./]
+getSalt() {
+    COUNT=1
+    SALT=""    
+    # let's save some typing :-)
+    addchar() {
+	SALT=$SALT$1
+	COUNT=$((COUNT+1))
+    }
+    
+    while [ $COUNT -le $1 ]; do
+	CHAR=`head -c1 /dev/urandom`
+	if [ "$CHAR" ]; then
+	if [ "$CHAR" != \( ]; then
+	if [ "$CHAR" != \! ]; then
+    	if [ "$CHAR" \> a -a "$CHAR" \< z ]; then 
+    		addchar "$CHAR"
+	    elif [ "$CHAR" \> A -a "$CHAR" \< Z ]; then
+			addchar "$CHAR"
+	    elif [ "$CHAR" \> 0 -a "$CHAR" \< 9 ]; then 
+			addchar "$CHAR"
+	    elif [ "$CHAR" = . ]; then
+			addchar "$CHAR"
+	    elif [ "$CHAR" = / ]; then
+			addchar "$CHAR"
+	    elif [ "$CHAR" = A -o "$CHAR" = Z ]; then
+    		addchar "$CHAR"
+	    elif [ "$CHAR" = a -o "$CHAR" = z ]; then
+    		addchar "$CHAR"
+	    elif [ "$CHAR" = 0 -o "$CHAR" = 9 ]; then
+    		addchar "$CHAR"
+	    fi
+	fi
+	fi
+	fi
+    done
+    echo $SALT
+}
+
+
+echo "generating encrypted password ... "
+
+while [ "$ENCPASSWD" = "" -o "$ENCPASSWD" = "Usage: mkpasswd PASSWORD SALT" ]; do
+    # we need some random salt
+    SALT=`getSalt 8`
+    # and the password
+    ENCPASSWD=`"$SCRIPTS"/misc/tools/mkpasswd --hash=md5 $PASSWD $SALT`
+done
+
+while [ ! -s $ROOTFS/etc/shadow.new ] ; do
+    # remove the root entry of the passwd file
+    cat $ROOTFS/etc/shadow | grep -v -e '^root:' > $ROOTFS/etc/shadow.new
+done
+
+# the new root entry
+echo "root:$ENCPASSWD:11643:0:99999:7:::" >> $ROOTFS/etc/shadow.new
+
+# and copy the new passwd file over the old one
+mv $ROOTFS/etc/shadow.new $ROOTFS/etc/shadow
+
+echo 

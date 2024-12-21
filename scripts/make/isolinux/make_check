@@ -1,0 +1,54 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+##       this script searches for the necessary binaries and            ##
+##       aborts if something isn't found                                ##   
+##                                                                      ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. ./config_build
+. $SCRIPTS/misc/lib/lib_fail
+
+FILES="tune2fs mkisofs dd mke2fs gzip mount rmdir tar"
+FAILED="false"
+
+# if we us a compressed ISO9660 we need that too
+if [ "$COMPRESSEDFS" = "yes" ]; then
+    FILES="$FILES mkzftree"
+fi
+
+# if we use a cramfs image file we need that too
+if [ "$CRAMFS" = "yes" ]; then
+	FILES="$FILES mkcramfs"
+fi
+
+# if we use a cramfs image file we need that too
+if [ "$CRAMFS" = "yes" ]; then
+	FILES="$FILES mkcramfs"
+fi
+
+# we do not need cdrecord if we just want the image
+if [ "$ISOIMAGEONLY" = "no" ]; then
+    FILES="$FILES cdrecord"
+fi
+
+# Lets look if everything is in the path we need
+for i in $FILES; do
+    if ! which $i >> /dev/null; then
+	echo "Sorry, can't find $i !"
+	FAILED="true"
+    fi
+done
+
+# if something was not found we fail
+if [ $FAILED = "true" ]; then
+    fail
+fi
+
+exit 0

@@ -1,0 +1,38 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## Burn the cd                                                          ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo "----------------------------------"
+echo "        burning rescue cd         "
+echo "----------------------------------"
+echo 
+echo
+
+# if we use a compressed ISO9660 image we need the -z switch
+if [ "$COMPRESSEDFS" = "yes" ]; then
+    Z="-z"
+fi
+
+# create the file RESCUECD to identify the rescue cd
+touch $ROOTFS/RESCUECD                 || fail
+
+# create the cd, either burn it or create just the image
+if [ $ISOIMAGEONLY = "yes" ]; then
+	mkisofs $Z -R -b boot/boot.img $ROOTFS > rescuecd.iso || fail
+else
+	mkisofs $Z -R -b boot/boot.img $ROOTFS |
+	cdrecord -eject $SCSIBLANK dev=$SCSIDEV speed=$SCSISPEED - || fail
+fi
+
+echo

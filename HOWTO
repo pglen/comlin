@@ -1,0 +1,105 @@
+                    How-To and Troubleshooting
+
+ ** How to boot from jump drive?
+
+ Go into the PC BIOS. Press the 'BIOS SETUP' key while the boot
+screen is showing. 
+
+ The BIOS SETUP key is mostly the 'Del' key or the 'F2' key on 
+some computers. All BIOS-es are unique, so follow the instructions
+loosely. Find the menu that configures USB, and enable it. 
+Next, enable USB for DOS, so the BIOS will look for the BOOT
+record on the USB drive. Last, make sure the USB drive is 
+configured as a BOOT drive or is in the 'Boot Priority' list.
+
+  ** Why do I need to use root privileges to extract archives?
+
+  The archive contains a system snapshot, including permissions that are 
+specific to some of the internal workings the system. (like suids)
+Unpacking the system as a regular user would squash those permissions,
+creating an unusable system.
+
+ ** How to make a new ComLin Jump Drive?
+
+ Execute 'make help'. It will offer a short help. 
+The fist step is to configure which drive is the jump drive. 
+Try 'make detect' which attempts to detect your jump drive. 
+Or do 'ls /dev/sd*' and observe the jump drive. Optionally, 
+edit the 'config_drive' file to reflect the new drive. 
+(see config.drive.sample)
+
+ The second step is to execute 'make new'. This partitions and formats
+the jump drive. After that, remove the jump drive and re-insert. 
+This mounts the newly created drives on your 
+system. (you may mount them by hand, but you need to adjust the scripts
+to find the jump drive mount locations. 
+
+ Then copy system to the jump drive by executing 'make copyusb'. Last, 
+execute 'make cycle' to copy syslinux to the jump drive. 
+Unmount ('make unmount') and done ...
+
+ ** How to make a custom ComLin Jump Drive out of my current system?
+
+ As above, but instead of 'make copyusb' execute 'make copy'. This is not 
+for the faint heart, as there are no arrangements in the scripts as to 
+the current state of your running system. ComLin scripts expect the user 
+'root' and the user 'user' to start up X.
+
+ ** How to add more programs to ComLin?
+
+ Comlin Works like any other RPM based Linux. It is sourced from CENTOS 6.3, 
+(which is sourced from RHEL6) and the CentOS distribution RPMS will work.
+ If you want to add RPMS from the internet, you can use rpm / yum / 
+and/or any package manager that runs on the CentOS family. Be warned,
+using an un-trusted RPM may compromise your system. Make sure you create 
+backups before experimenting. One good thing about comlin, it is easy to 
+back up. All you need is a second jump drive.
+
+  ** ComLin recovery.
+
+ ComLin contains several levels of recovery. At the most fundamental level, 
+the boot process prompts you to press a key to drop to the shell at different
+ points in the boot-up process.
+
+    1.) initrd time, so one can fsck the root disk on usb (obsolete)
+    2.) Before X starts, so additional drivers can be added
+    3.) Before X restarts, so the X restart process can be augmented
+    4.) Before reboot / shutdown for analysis and/or rescue.
+
+ Reaching the final measure, the USB drive can be re-created by copying the 
+files from the original image. If the boot part of the OS is damaged,
+that can be re-created by the make_syslin script. (which can be 
+called from the Makefile as 'make cycle'. [See 'make help'])
+If the files are damaged, that can be re-created by 'make copyusb'
+
+   ** Disaster preparedness
+
+ At its simplest, create a second comlin USB on a new drive. You 
+may boot from the backup drive, and resore any file / setting that 
+is missing or damaged. If you copy the comlin creation scripts 
+to the backup device, you may re-create the original system in 
+one step. The second drive may act as a failsafe if you are in
+remote locale. The second drive may also serve as a data backup
+with a simple command like this:
+
+    cp -au from_home_dir to_backup_location
+    
+Translates to:
+
+    cp -au * /media/COMBOOT_/home/user    
+
+This is what the /apps/mirror.sh script does.
+
+   ** Intrusion detection
+
+ The shell script /apps/checksum.sh will compare the signatures of  
+original files in the system. The utility will report on files that have
+changed since initial installation. Run as root or sudo. For example:
+
+    /apps/checksum.sh /etc/passwd
+
+ Will list all /etc/password file integrity check reports.
+
+    This project is funded by donations. Please consider donating
+    on PayPal to the account of peterglen99@gmail.com.
+

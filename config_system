@@ -1,0 +1,70 @@
+#!/bin/sh
+
+
+######################################################################
+### network device config
+## comment this section out if you don't want network support configured
+##
+
+# set this to yes if you want to get your ip via dhcp
+# if DHCP is set to "yes" the following network specific parameters
+# have no effect
+DHCP="yes"
+
+# set this to yes if you want that the network will be configured according 
+# to your current ifconfig automagically
+# if this is set to yes the following three parameters(INET, NETMASK, GATEWAY)
+# have no effect.
+NETWORKAUTOCONFIG="no"
+
+# ip
+INET="192.168.0.22"
+
+# subnet mask
+NETMASK="255.255.255.0"
+
+# default gateway
+# you can leave this blank if you don't use a default gateway
+GATEWAY="192.168.0.1"
+
+# the nameserver you want to use
+NAMESERVER=""
+
+
+######################################################################
+### modules
+## comment this section out if you don't want module support configured
+##
+
+# a list of modules which should be loaded at boot time
+# example:
+# pcnet32,io=0x300,irq=10 rtl8139,io=0x200
+MODULES=""
+
+
+######################################################################
+### gpm mouse config
+## on /dev/ttyS0 runs a getty to provide a serial console, so you cannot
+## put your mouse on /dev/ttyS0 !
+## comment this section out if you don't want mouse support configured
+##
+
+MOUSEPORT="/dev/ttyS1"
+MOUSETYPE="ms3"
+MOUSEREPEATTYPE="ms3"
+MOUSRESPONSIVENESS=""
+MOUSEAPPEND=""
+
+######################################################################
+### some more options to go
+##
+
+# Password for the rescue system
+PASSWD="rescue"
+
+# additional packages you want to install
+# you can also use the tool utils/package_install 
+# to install additional packages
+# you will find a list of available packages at doc/packages
+# eg: "gpm lsof"
+PACKAGES=""

@@ -1,0 +1,61 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## assembles the gzipped initrd image                                   ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+SINK=/dev/null
+RD=$TMPDIR/initrd
+
+echo "----------------------------------"
+echo "        Assembling cpio initrd    "
+echo "        May need sudo pass        "
+echo "----------------------------------"
+echo 
+
+sudo mkdir -p $TMPDIR/tmp
+
+# Clean if needed
+sudo rm -rf  $TMPDIR/tmp/*
+
+# Assemble new initrd
+echo -n "Copying initrd fs to "$TMPDIR"/tmp ..."
+sudo cp -dpR "$INITRDFS"/* "$TMPDIR"/tmp  
+echo OK
+
+echo  -n "Copying utilities ... "
+sudo cp  apps/reboot/linux_reboot "$TMPDIR"/tmp/sbin 
+sudo cp  apps/reboot/linux_poweroff "$TMPDIR"/tmp/sbin 
+sudo cp  apps/keyget/keyget "$TMPDIR"/tmp/bin 
+
+# Make sure it is owned by root
+sudo chown -R root.root "$TMPDIR"/tmp 
+echo OK
+
+echo -n "Initrd fs size: (kbytes) "
+du  -c "$TMPDIR"/tmp | tail -1
+
+# Gzip it
+echo -n "Gzip / Cpio $TMPDIR/tmp ... "
+pushd `pwd` >/dev/null
+cd 	$TMPDIR/tmp
+find . | cpio --quiet -H newc -o | gzip -9 -n > ../initrd.cp
+popd > /dev/null
+echo OK
+
+echo -n "Removing temps ... "
+sudo rm -rf  $TMPDIR/tmp/
+echo OK
+
+echo -n "Initrdfs final size: "
+ls -l $RD* | awk {'printf "%.2f MB\n", $5 / 1000000'}
+

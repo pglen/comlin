@@ -1,0 +1,65 @@
+<e><c><xxl>Technical Details</xxl></c></e>
+<e><c><xxl><image name=pinguin.xpm align=center> <b>Community Linux</b></b>.\
+<image name=pinguin.xpm align=center></xxl></c></e>
+
+<c>\
+<link name=index.pango> [ <u>Index</u> ] </link> \
+<link name=install.pango> [ <u>Installation</u> ] </link>\
+<link name=faq.pango> [ <u>Troubleshooting</u> ] </link>\
+<link name=tech.pango> [ <u>Technical Details</u> ] </link>\
+<link name=create.pango> [ <u>Create ComLin Drive</u> ] </link>\
+</c>
+<j><w>
+
+ <b>Community Linux</b> is derived from sources freely provided by the Linux community, and where applicable, it conforms fully to existing Linux standards. Community Linux< relies on open source technologies, in that same spirit, we shared our additions to the open source base. Below, is a short description of the technologies we added, and the reasons for it. Also a short primer of some of the choices we made. (Non technical users may skip this)
+
+<i>1.) Runlevel-less operation.</i>
+
+   The (older) kernel refused to accept the jump drive as a root device. So we never transfer control back to process 1 (init). The result of this, we maintain OS state in shell scripts. Thanks to the designers of the kernel, it is stateless, the user space maintains the concept of run levels, in our case, no run levels.
+
+<i>2.) Listeners</i>
+
+  Because there are no run-levels, we added some listeners to compensate for the lack of run-level system messages. There are listeners for removable drives, media change, the power switch, and some other minor events. We also added a small utility to collect zombies.
+
+<i>3.) Wireless Utility</i>
+
+  The wireless utility is updated to use the new 80211 stack programs, namely the 'iw' and family. The user interface is the same netkit that came with Gnome.
+
+<i>4.) Graphical su</i>
+
+  Utilities that require root access have the menus are now pre-pended with a graphical utility (GUI) beesu. (No user intervention needed)
+
+<i>5.) One user operation.</i>
+
+   <b>Community Linux</b> is designed to run as a personal class UNIX, only one user is created. Naturally, multiple users can be created, but they are not needed, as user privacy is achieved by encrypted directory access. This makes <b>Community Linux</b> a <e>Personal Class</e> operating system. 
+
+<i>6.) Flash Drive Life Expectancy - Ext2 vs Ext3 vs Ext4</i>
+
+   The <b>Community Linux</b> root drive is created as an ext4 partition. We chose this, as the journalling commit interval can be configured, to curtail constant writes to the jump drive, extending its useful life. 
+<m>
+  However, if jump drive life expectancy is less of a concern than data integrity, you may enable mounting it as ext4 with its default jornalling option of (5 seconds). This can be done in the linuxrc script, or successors. (currently: sturtup*.sh) 
+
+If useful life is a primary concern, the drive can be mounted as an ext2 partition, to prevent the journalling to constantly access the drive. With the ext2 option life expectancy is practically unlimited. The compromise is evaluated on a per case basis, considering guaranteed jump drive write cycle versus journalling interval.
+
+  The 60 second (ComLin default) write cycle gives you a theoretical limit of 47.6 years. Assuming standard (5 sec) journalling, one million write cycles is appx. 3.8 years.  Please note that some jump drives have a mechanism where the write cycles are spread out into different cells for longer life. If in doubt, see the documentation that comes with your jump drive.
+</m>\
+
+<i>7.) Zombies.</i>
+
+   <b>Community Linux</b> is init-less. Traditionally, init had the task of collecting zombies. Thanks to the kernel designers, the zombie collection can be entrusted to processes other than init, so we created a small utility, aptly name 'eatzomb' to do just that. What is a zombie? (see <a href=help.html> help </a>)
+
+<i>8.) Encryption.</i>
+
+   <b>Community Linux</b> contains an encfs based encryption. The great advantage is that it does not need a pre-allocated partition or reserved space. It is safe and secure to use the encryption feature, and the strength of the encryption is sufficient to protect your data. More information about the encryption used can be found on the encfs documentation pages.
+
+<i>9.) Documentation.</i>
+
+   <b>Community Linux</b> contains a document display system called 'pangview'. It is a simplified version of the pango markup. We created this, as a fast way to display simple documentation. The pangview file excepts *.pango files, which can be written by a text editor. The pangview project is open sourced, so one can extend it, debug it freely. These documents are written and displayed by the 'pangview.py' utility.
+
+ <b>Community Linux</b></b> is maintained by Peter Glen. The project is funded by donations, please consider contributing. Contributions are accepted on <r>Paypal;</r> account: <i>peterglen99@gmail.com</i>
+</w></j>
+<c>The 'ComLin'</b> and '<b>Community Linux</b>'</b> names are Copyright Peter Glen.<sm>
+</sm>\
+<i>This document is displayed by the pangview utility.</i>
+</c>
+

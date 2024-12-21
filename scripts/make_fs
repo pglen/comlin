@@ -1,0 +1,52 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "----------------------------------"
+echo " Crating USB Drive FS"
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit 1
+fi
+
+for AA in "/mnt" "/boot" "/home" "/usr" "/var"; do
+    checkMnt $AA
+done
+
+if [ x"$1" == x"" ] ; then
+ getkey -c 5  -m "Are you sure you want to mkfs \"$RDDEV\" ? ctrl-c to abort " y
+
+ if [ $? != 0 ] ; then 
+	echo
+	exit 1;
+ fi
+ echo
+fi
+
+# Silent unmount
+sudo umount $MCOMLIN >/dev/null 2>&1
+sudo umount $MCOMBOOT >/dev/null 2>&1
+
+# Try unmount devices as well, mkfs will refuse otherwise
+sudo umount $DDEV >/dev/null 2>&1
+sudo umount $DDEV2 >/dev/null 2>&1
+
+# MSDOS
+sudo mkfs.vfat $DDEV -n COMLIN
+
+# Ext4 .... more resilient from removes and we make the journalling ...
+# ... update on a minute bases for long life
+
+sudo mkfs.ext4 $DDEV2
+sudo e2label $DDEV2 "COMBOOT"
+sudo tune2fs -c0 -i0 $DDEV2
+
+echo ... Remove and reinsert Jump drive for next steps ...
+

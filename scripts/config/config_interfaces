@@ -1,0 +1,69 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## configure $ROOTFS/etc/network/interfaces                             ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. config_system
+. "$SCRIPTS"/misc/lib/lib_fail
+
+if [ ! "$DHCP" -a ! "$INET" -a ! "$NETWORKAUTOCONFIG" ]; then
+    exit 0
+fi
+
+echo "----------------------------------"
+echo "      configuring interfaces      "
+echo "----------------------------------"
+echo 
+echo
+
+# backup the old interfaces
+cp $ROOTFS/etc/network/interfaces $BACKUPDIR/
+
+if [ "$NETWORKAUTOCONFIG" = "yes" ]; then
+    # configure the network automagically
+    # perl script contributed by Matthew Cline <matt@nightrealms.com>
+    INET=$("$SCRIPTS"/misc/contribute/networkInfo.pl | grep ADDRESS | cut -d\= -f2)
+    NETMASK=$("$SCRIPTS"/misc/contribute/networkInfo.pl | grep NETMASK | cut -d\= -f2)
+    GATEWAY=$("$SCRIPTS"/misc/contribute/networkInfo.pl | grep GATEWAY | cut -d\= -f2)
+fi
+
+# now go on either with dhcp or ...
+if [ "$DHCP" = "yes" ]; then
+    cat <<EOF 			    > "$ROOTFS"/etc/network/interfaces
+# /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
+
+# The loopback interface
+auto lo
+iface lo inet loopback
+
+# The first network card 
+iface eth0 inet dhcp
+EOF
+# ... do it the old way
+else
+    cat <<EOF 			    > "$ROOTFS"/etc/network/interfaces
+# /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
+
+# The loopback interface
+auto lo
+iface lo inet loopback
+
+# The first network card 
+iface eth0 inet static
+    address $INET
+    netmask $NETMASK
+EOF
+    if [ "$GATEWAY" ]; then
+	echo "    gateway $GATEWAY"  >> "$ROOTFS"/etc/network/interfaces
+    fi
+fi
+
+echo

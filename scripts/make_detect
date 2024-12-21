@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo
+echo -n "Remove the Jump Drive (if inserted), and then press a key ... "
+getkey >/dev/null 2>&1
+echo OK
+echo
+
+mount > aa
+
+echo "Insert the NEW Jump Drive  (USB drive) now."
+echo -n "Wait for the automount to settle (if any), and then press a key ... "
+getkey >/dev/null
+echo    
+echo "OK, testing for new mount ..."
+sleep 2
+
+mount >bb
+
+DD=`diff aa bb`
+
+#cut -f 3 -d " "
+#echo $DD
+
+EE=`echo $DD | awk  '{ print $3 };' | sed  s/[0-9]// `
+
+if [ "" != "$EE" ] ; then 
+	echo Detected USB drive in $EE
+    echo "You may use the 'df' command to check for correctness"
+	# Create configuration entry
+	echo "RDDEV=$EE" > config_drive
+else
+	echo "No Drive detected, please try again"
+fi
+

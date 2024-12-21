@@ -1,0 +1,53 @@
+                             TECHNOLOGIES       
+
+ Community Linux relies on open source technologies. Naturally, in that
+same spirit, we shared our additions to it. Below, is a short description
+of the technologies we added, and the reasons for it.
+
+1.) Runlevel less operation.
+
+ The (older) kernel refused to accept the jump drive as a root device. So we 
+never transfer contol back to process 1. The result of this, we maintain 
+OS state in shell scripts. Thanks to the designers of the kernel, it is
+stateless, the user space maintains the concept of run levels, in our case,
+no run levels. In the current (and later) version, we use the new init shell
+script method, and kept the runlevel less operation.
+
+2.) Listeners.
+
+  Because there are no runlevels, we added some listeners to compensate 
+for the lack of runlevel messages. There are listeners for removable drives,
+ media change, the power switch, and some other minor events.
+
+3.) Wireless.
+
+  The wireless utility is updated to use the new 80211 stack, iw and family.
+The wireless front end is the  standard Gnome frontend. 
+
+4.) Utilities.
+
+ Utilities that require root access are now pre-pended with a graphical (GUI)
+ sudo called 'beesu'.
+
+5.) One user operation.
+
+ Community Linux is desined to run as a personal class unix, only one user
+is created. This in in harmony with typical on-line computing, as the 
+user name / password is maintained in the online realm.
+
+  Naturally, multiple users can be created, but they are not needed, as 
+user privacy is achived by encrypted file/dir access. This also reinforces 
+Community Linux as a personal class operating system. The default user 
+is in the sudoers file, so one can administer the system with the 
+sudo utility. (or beesu for GUI)
+
+ The initial pass is 'user1234' (without the quotes) The root user is 
+enabled, and the intial pass for root is 'admin1234'. Make sure you 
+change these passes before real life deployment.
+
+6.) Encrypted directory.
+
+  The directory ~/encrypted/documents is a pre-set encrypted folder. The 
+initial pass is '1234' (without the quotes) Make sure you change this
+pass before using it for real data.
+

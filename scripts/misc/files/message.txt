@@ -1,0 +1,5 @@
+
+[1] Boot SPACE GUI (default)
+[2] Boot SPACE to the text mode login prompt
+[3] Boot SPACE to rescue mode
+

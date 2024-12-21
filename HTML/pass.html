@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+  <title>Community Linux Passwords</title>
+  <style rel="stylesheet" type="text/css"> 
+
+	html {
+	background-color: white;
+	font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+	font-size: 1.2em;
+	line-height: 1.25em;
+	margin: 0 4% 0 4%;
+	}
+
+	body {
+	border: 10px solid #fff;
+	margin:0;
+	padding:0;
+	font-size: 1.2em;
+	background: #fff;
+	font-size: 1.6em;
+	}
+
+	/* Links */
+
+	a:link { border-bottom: 1px dotted #ccc; text-decoration: none; color: #204d92; }
+	a:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+	a:active {  border-bottom:1px dotted #ccc; text-decoration: underline; color: #204d92; }
+	a:visited { border-bottom:1px dotted #ccc; text-decoration: none; color: #204d92; }
+	a:visited:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+ 
+	.logo a:link,
+	.logo a:hover,
+	.logo a:visited { border-bottom: none; }
+
+	.mainlinks a:link { border-bottom: 1px dotted #ddd; text-decoration: none; color: #eee; }
+	.mainlinks a:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+	.mainlinks a:active { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+	.mainlinks a:visited { border-bottom:1px dotted #ddd; text-decoration: none; color: white; }
+	.mainlinks a:visited:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+
+	/* User interface styles */
+
+	#header {
+	margin:0;
+	padding: 0.5em;
+	background: #204D8C url(img/header-background.png);
+	text-align: left;
+	}
+
+	.logo {
+	padding: 0;
+	/* For text only logo */
+	font-size: 1.4em;
+	line-height: 1em;
+	font-weight: bold;
+	}
+
+	.logo img {
+	vertical-align: middle;
+	padding-right: 1em;
+	}
+
+	.logo a {
+	color: #fff;
+	text-decoration: none;
+	}
+
+	p {
+	line-height:1.5em;
+	font-size: 1.2em;
+	}
+
+	h1 { 
+		margin-bottom: 0;
+		line-height: 1.9em; }
+	h2 { 
+		margin-top: 0;
+		line-height: 1.7em; }
+
+	#content {
+	clear:both;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-bottom: 30px;
+	border-bottom: 5px solid #eee;
+	}
+
+    .mainlinks {
+        float: right;
+        margin-top: 0.5em;
+        text-align: right;
+    }
+
+    ul.mainlinks > li {
+    border-right: 1px dotted #ddd;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline;
+    list-style: none;
+    }
+
+    ul.mainlinks > li.last,
+    ul.mainlinks > li.first {
+    border-right: none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+<p>
+<table border=0 >
+<tr bgcolor=#cccccc ><td>
+<center>
+<a href=index.html>
+<font size=+5 bold=true> &nbsp;<font  color=#8800ff>Community Linux</font>
+Passwords </font>
+</a>
+</center>
+
+<tr><td>
+<center>
+<p>
+<a href=install.html>[ Installation ]</a>&nbsp; &nbsp;<a href=tech.html>[ Technical Details ]</a>&nbsp; &nbsp; <a href=help.html>[ Troubleshooting ]</a>&nbsp; &nbsp;<a href=create.html>[ Create ComLin USB ]</a>
+</center>
+
+<tr background=chip.jpg><td>
+
+<p>
+<b>Default passwords:</b>
+<p>
+<p>&nbsp; Initially, Community Linux runs as 'user' and it has the default password as 'user1234'. (without the quotes) The default 'user' is the sudoers file, so all administarion tasks can be done as 'user'.
+Community Linux also has an enabled 'root' user, with a password of 'admin1234'. 
+
+ Before you create any personal documents, or connect to any network, make sure you change these passwords. The passwords can be changed by any of the traditional UNIX tools like 'passwd' or any GUI password changing utility. There are two icons on the desktop for changing the passwords.
+
+  It is worthy to note, that we switched cracklib off, so the passwd utility accepts simpler passwords. But just because the system is more permissive, you may still have a password as complex as you wish.
+<p>
+<b>Encryption subsystem:</b>
+<p>
+&nbsp; &nbsp; Community Linux is also equipped with a state of the art encryption subsystem. We created a default setting to make it easy to use. The default setting can be enabled by clicking on the padlock icon, (on the upper toolbar, on the right side) enabling the encrypted/documents directory, and entering the default password '1234' Before you create any personal documents, or connect to any network, make sure you change the encryption password.
+<p>
+<b>System firewall:</b>
+<p>
+&nbsp; &nbsp; The system firewall is enabled, and some of the standard ports are open. (SSH, HTTP ... etc) If you changed the passwords before you connected to a network, these settings should be fine. If higher security is desired, please refer to the System Administration Manual or consult a system administrator.
+<p>
+<b>System lock down:</b>
+<p>
+&nbsp; &nbsp; Community Linux is designed to be a personal class system. However, it adheres to UNIX standards, so all the security measures of Linux are available. (selinux, polkit) For further details, please refer to the System Administration Manual or consult a system administrator.
+<p>
+<hr>
+<p>
+&nbsp; Community Linux is maintained by Peter Glen. The project is funded by donations, please consider contributing. Contributions are accepted on <font color=red>Paypal;</font> account: peterglen99@gmail.com
+<p>
+<hr>
+<center>
+The 'ComLin' and 'Community Linux' names are (C) copyright Peter Glen.
+</center>
+
+</body>
+</html>
+

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+#echo $RDDEV
+#exit
+
+echo
+echo "----------------------------------"
+echo " Creating USB Drive Grub"
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit
+fi
+
+comlin=`mount | grep COMLIN`
+if [ x"$comlin" == x"" ] ; then
+	echo Target COMLIN not mounted
+	#sudo mount $DDEV2 /media/COMLIN
+	exit
+fi
+
+bootlin=`mount | grep BOOT`
+if [ x"$bootlin" == x"" ] ; then
+	echo Target BOOT not mounted
+	#sudo mount $DDEV /media/BOOT
+	exit
+fi
+
+if [ x"$1" == x"" ] ; then
+   getkey -c 5  -m "Are you sure you want to install grub on \"$RDDEV\" ? ctrl-c to abort " y
+
+ if [ $? != 0 ] ; then 
+	echo Aborted.
+	exit;
+ fi
+ echo
+fi
+
+sudo mkdir -p /media/BOOT/grub
+sudo cp  /usr/share/grub/i386-redhat/* /media/BOOT/grub
+sudo cp /boot/vmlinuz /media/BOOT/
+sudo cp _work/tmp/initrdfs /media/BOOT
+sudo cp  grub.conf /media/BOOT/grub
+#sudo umount /media/BOOT
+#sudo umount /media/COMLIN
+sudo dd if=/usr/share/grub/i386-redhat/stage1 of=$DDEV bs=512
+

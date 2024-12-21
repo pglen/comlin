@@ -1,0 +1,119 @@
+#!/bin/sh
+##------------------------------------------------------------------------
+##                              
+## Copies USB image to USB drive
+##                                                                      
+## This program is free software; you can redistribute it and/or modify 
+## it under the terms of the GNU General Public License as published by 
+## the Free Software Foundation; either version 2 of the License, or    
+## (at your option) any later version.                                  
+##                                                                      
+##------------------------------------------------------------------------
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+#echo "$MCOMLIN"
+#echo "$MCOMBOOT"
+
+echo
+echo "----------------------------------"
+echo " Copying USB image to USB drive "
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Is the drive here?
+GREPX=`mount | grep $DDEV`
+
+if [ x"$GREPX" == x"" ] ; then 
+    echo "Mount (insert) $DDEV first."
+   	exit 1
+fi
+
+# Is the second drive here?
+GREPX=`mount | grep $DDEV2`
+
+if [ x"$GREPX" == x"" ] ; then 
+    echo "Mount (insert) $DDEV2 first."
+   	exit 1
+fi
+
+# pre - check for root extraction
+RRR=`ls $CURRUSB/vmlinuz -l | awk {'print $3'}`
+if [ "$RRR" != "root" ] ; then
+    echo "Archive was not extracted as root"
+    exit
+fi
+ 
+echo "Copying USB ($CURRUSB)...  to $MCOMBOOT (may take a while)"
+echo
+echo "You may want to disable powersave for the duration of the copy ..."
+echo
+
+sudo cp -a $CURRUSB/*  $MCOMBOOT
+
+# Fix ownerships
+
+echo Fixing ownerships ....
+
+# Disabled by PG
+#sudo chown  root.root $MCOMBOOT/
+#sudo chown -R root.root $MCOMBOOT/sh
+#sudo chown -R root.root $MCOMBOOT/bin
+#sudo chown -R root.root $MCOMBOOT/sbin
+#sudo chown -R root.root $MCOMBOOT/usr
+#sudo chown -R root.root $MCOMBOOT/etc
+#sudo chown -R root.root $MCOMBOOT/var
+#sudo chown -R root.root $MCOMBOOT/tmp
+#sudo chown -R root.root $MCOMBOOT/lib
+#sudo chown -R root.root $MCOMBOOT/opt
+#sudo chown -R root.root $MCOMBOOT/apps
+#sudo chown -R root.root $MCOMBOOT/images
+
+#sudo chmod a+rwxt  $MCOMBOOT/tmp
+#sudo chmod a+r     $MCOMBOOT/images/*
+
+# This could be expressed better ... good for now
+#sudo chown  root.root $MCOMBOOT/
+#sudo chown  root.root $MCOMBOOT/*
+#sudo chown  root.root $MCOMBOOT/.*
+
+#sudo chown  root.root $MCOMBOOT/home/
+#sudo chown  root.root $MCOMBOOT/home/*
+#
+
+sudo chown .apache $MCOMBOOT/etc/httpd/alias/cert8.db
+sudo chown .apache $MCOMBOOT/etc/httpd/alias/key3.db
+
+# Get UIDS from live target
+UUU=`grep ^user: $MCOMBOOT/etc/passwd | awk -F ":" {'print $3'}`
+GGG=`grep ^user: $MCOMBOOT/etc/group | awk -F ":" {'print $3'}`
+
+sudo chown -R $UUU.$GGG $MCOMBOOT/home/user
+sudo chown -R $UUU.$GGG $MCOMBOOT/home/user/.*
+
+# This is not strckly neccessery, some systems lost suid bits 
+echo "Fixing suids ... "
+
+for FF in `cat suids` ; do
+	FFF=`echo $FF | awk -F "/" {' for(aa=3; aa<=NF;aa++) { printf "/%s", $aa} '}`
+    #echo ${MCOMBOOT}$FFF
+	sudo chmod u+s ${MCOMBOOT}$FFF
+done
+echo 
+
+echo "Fixing suid groups ... "
+
+for FF in `cat suidgr` ; do
+    FFF=`echo $FF | awk -F "/" {' for(aa=3; aa<=NF;aa++) { printf "/%s", $aa} '}`
+    #echo ${MCOMBOOT}$FFF
+	sudo chmod g+s ${MCOMBOOT}$FFF	
+done
+echo
+
+echo Syncing ...
+sync 
+
+echo Done.
+

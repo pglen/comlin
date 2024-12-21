@@ -1,0 +1,39 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+#echo $RDDEV
+#exit
+
+echo
+echo "----------------------------------"
+echo " Installing SYSLINUX to USB Drive "
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+MCOMLIN=/media/COMLIN
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit
+fi
+
+comlin=`mount | grep COMLIN`
+if [ x"$comlin" == x"" ] ; then
+	echo Target COMLIN not mounted. Remove and reinsert Jump Drive
+	exit
+fi
+
+if [ ! -f _work/tmp/initrdfs.gz ] ; then
+	echo Make INITRD first. 
+	exit
+fi
+
+# Copy boot files
+sudo cp _work/tmp/initrdfs.gz $MCOMLIN
+touch $MCOMLIN/comlin
+
+

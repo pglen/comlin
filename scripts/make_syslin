@@ -1,0 +1,134 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "----------------------------------"
+echo " Installing SYSLINUX to USB Drive "
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit 1
+fi
+
+comlin=`mount | grep COMLIN`
+if [ x"$comlin" == x"" ] ; then
+	echo Target COMLIN not mounted. Remove and Re-insert Jump Drive
+	exit 1
+fi
+
+# Get syslin's current initrd setting 
+SL=`grep initrd= syslinux/syslinux.cfg | head -n 1 | awk {'print $2'} | awk -F "/" {'print $2'}`
+
+if [  x"$SL" ==  x"" ] ; then
+	echo Configure syslin first. 
+	exit 1
+fi
+
+if [ ! -f $MCOMBOOT/bin/bash ] ; then
+	echo "Execute 'make copyusb' first. "
+	exit 1
+fi 
+
+#echo "Using '$SL' as initrd"
+#
+#if [  ! -f $TMPDIR/$SL ] ; then
+#	echo Make INITRD first. 
+#	exit
+#fi
+
+if [ x"$1" == x"" ] ; then
+   getkey -c 5  -m "Are you sure you want to install syslinux on \"$DDEV\" ? ctrl-c to abort " y
+
+ if [ $? != 0 ] ; then 
+	echo Aborted.
+	exit 1;
+ fi
+ echo
+fi
+
+echo -n "Forcing new host detection ... "
+sudo mkdir -p $MCOMBOOT/etc
+sudo rm  $MCOMBOOT/etc/hostname >/dev/null 2>&1
+echo OK
+
+echo -n "Copying HTML ... "
+
+sudo mkdir -p $MCOMBOOT/usr/share/doc/comlin
+sudo cp  -a  HTML $MCOMBOOT/usr/share/doc/comlin
+echo OK
+
+echo -n "Copying pango docs ... "
+
+sudo mkdir -p $MCOMBOOT/usr/share/doc/comlin
+sudo cp  -a  docs $MCOMBOOT/usr/share/doc/comlin
+echo OK
+
+
+# Copy apps
+echo -n "Copying supplementary apps ... "
+mkdir -p  $MCOMBOOT/apps
+sudo cp  -a  apps/* $MCOMBOOT/apps
+echo OK
+
+echo -n "Copying utilities ... "
+sudo mkdir -p $MCOMBOOT/bin
+sudo cp   apps/keyget/keyget $MCOMBOOT/bin
+echo OK
+
+# Copy kernel/boot files
+#echo -n "Copying kernel files ... "
+#sudo cp   _kernel/* $MCOMLIN
+#sudo cp   _kernel/* $MCOMBOOT
+#echo OK
+
+echo -n "Copying syslinux config ... "
+sudo cp -a syslinux $MCOMLIN
+echo OK
+
+# Get stock initrd
+echo -n "Copying initrd ... "
+#sudo cp  $TMPDIR/$SL $MCOMLIN
+sudo cp /boot/initramfs-`uname -r`.img $MCOMLIN/initrdfs
+echo OK
+
+echo -n "Copying boot scritps ... "
+mkdir -p $MCOMBOOT/sh
+sudo cp  -a ./sh/*  $MCOMBOOT/sh
+echo OK
+
+#echo -n "Fixing ICEauthority ... "
+#sudo rm /media/COMBOOT/home/user/.ICEauthority
+#sudo rm /media/COMBOOT/var/lib/gdm/.ICEauthority
+#echo OK
+
+# Refresh root pass indicator
+
+echo -n "Initing pass compare files ... "
+RRR=.orgpass
+grep "root:" $MCOMBOOT/etc/shadow > $MCOMBOOT/root/$RRR
+grep "user:" $MCOMBOOT/etc/shadow > $MCOMBOOT/home/user/$RRR
+echo OK
+     
+# Get simple init
+echo -n "Copying init ... "
+sudo cp  ./sbin/init $MCOMBOOT/sbin/init
+echo OK
+
+# Some housekeepin'
+#sudo touch /media/COMBOOT/comboot
+sudo rm -rf /media/COMBOOT/tmp/* >/dev/null 2>&1
+sudo rm -rf /media/COMBOOT/tmp/.* >/dev/null 2>&1
+
+# Make it bootable
+echo -n "Making it bootable ... "
+sudo syslinux --directory syslinux $DDEV
+echo OK
+
+exit 0
+

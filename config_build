@@ -1,0 +1,183 @@
+#!/bin/sh
+#############################################################################
+##                                                                         ##
+##                          Customize these options                        ##
+##                                                                         ##
+#############################################################################
+
+# root directory of the USB-set
+BASE=`pwd`
+
+# !IMPORTANT! make sure this is really the USB drive, otherwise you are
+# overwriting live data. You have been advised.
+
+if [ ! -f ./config_drive ] ; then
+	echo "USB drive not configured. Run 'make detect' first"
+	exit 1;
+fi
+
+
+# This is the USB drive root for partitioning
+. ./config_drive
+
+if [ $RDDEV == "" ] ; then
+	echo "USB drive not configured."
+	exit 1;
+fi
+
+# Where our USB data lives
+CURRUSB=../comlin-usb-000
+
+# This is the USB boot part
+DDEV=${RDDEV}1
+
+# This is the USB drive
+DDEV2=${RDDEV}2
+
+# Here it is mounted
+DMOUNT=/mnt/guest
+
+# where is the rescue system located
+ROOTFS="system"
+
+# where is the initrd located
+INITRDFS="initrdfs"
+
+# The directory where the kernel you want to use is located
+
+KERNEL="_kernel"
+
+# Script directory
+SCRIPTS="scripts"
+
+# Temporary mount point
+MOUNTPOINT="_work/mnt"
+
+# Tempdir
+TMPDIR="_work/tmp"
+
+# Backup of changed system files
+BACKUPDIR="_work/backup"
+
+### Configure your scsi device
+
+# The scsi device id, see man cdrecord
+SCSIDEV="0,0,0"
+
+# The cd writer speed
+SCSISPEED="52"
+
+# Comment the following line out if you don't want cdrw blanking
+SCSIBLANK="blank=fast"
+
+### some more options to go
+
+# Defaults for USB target, override if the /mnt/COMXX is mounted
+
+MCOMLIN=/media/COMLIN
+MCOMBOOT=/media/COMBOOT
+
+GREPX=`mount | grep /mnt/COMLIN`
+if [ x"$GREPX" != x"" ] ; then 
+    #echo "Force override to /mnt/COMLIN"
+   	MCOMLIN=/mnt/COMLIN
+fi
+
+GREPX=`mount | grep /mnt/COMBOOT`
+if [ x"$GREPX" != x"" ] ; then 
+    #echo "Force override to /mnt/COMBOOT"
+   	MCOMBOOT=/mnt/COMBOOT
+fi
+
+# Make sure they are not on /mmt or / or /boot
+# Args: $1 is a name to grep in mount string
+
+checkMnt()
+{
+    MM=`mount | grep $DDEV`
+    MMM=`echo $MM | grep "$1"`
+    if [ x"" != x"$MMM" ] ; then
+        echo "Refusing to operate on partition that is mounted on the $1 subtree"
+        exit 1
+    fi
+}
+
+# Most of the items below are obsolete, kept in for reference
+
+# the bootloader you want to use
+# it can be one of "isolinux", "lilo", "syslinux" or "grub"
+# i suggest using isolinux because you can make the
+# kernel and the initrd as big as you like. if you use
+# syslinux, lilo or grub the size of your kernel image
+# and the compressed initrd should not exceed 2.88MB.
+# lilo/syslinux/grub may or may not run on systems
+# where isolinux does not work
+
+#BOOTLOADER="isolinux"
+
+# The size of the initial ramdisk in kbytes
+RAMSIZE="14000"
+
+# Must be multiple of 0x8000
+#RAMSIZE=$((400*0x8000))
+
+# If you don't want to burn the cd but only the isoimage say yes here
+# you will find the image in $BASE/rescuecd.iso
+
+ISOIMAGEONLY="yes"
+
+#ISOIMAGEONLY="no"
+
+# if you want to use a compressed ISO9660 image say yes here. It
+# will double the available space on your cd.
+# if you plan to load the rescuecd into ram then i highly suggest
+# using a compressed is9660 fs because it will reduce the
+# total needed RAM by the factor 2.
+# Be sure to read doc/README.compressedfs before setting this
+# switch to yes.
+
+COMPRESSEDFS="no"
+
+# if you want to use a compressed cramfs image say yes here. It
+# will double the available space on your cd. cramfs will
+# result in a slightly better compression ratio than zisofs, but
+# on the other hand cramfs is somewhat limited. Max. 256MB Images
+# and max. 16MB big files are supported.
+# if you plan to load the rescuecd into ram then i highly suggest
+# using a compressed cramfs image because it will reduce the
+# total needed RAM by the factor 2.
+# The kernel will need compiled in support for cramfs.
+# Only one of COMPRESSEDFS and CRAMFS can be set to yes.
+
+CRAMFS="no"
+
+# size of the floppy disk image if you are using lilo, syslinux or grub as the
+# bootloader.
+# usually you won't change this except your bios only boots from 1.44MB
+# floppy disk images, which is rather unusual.
+# if you want a real bootable floppy disk use the script utils/make_boot_disk.
+# possible values are 144 for an 1.44MB disk image and 288 for an 2.88MB
+# disk image.
+# the following combinations will not work with the default configuration:
+# - 144 and grub
+# - 144 and lilo
+# you probably need to build your own kernel if you are constrained to
+# use 1.44MB floppy images (except isolinux of course, which does not need
+# any floppy images).
+
+#FLOPPYSIZE="288"
+
+# The Debian repository mirror configuration
+# (contributed by Sebastien J. Gross <sjg@debian.org>)
+
+# which ftp server we should use. Acutally, you should select the closest mirror
+# from your location. Have a look at http://www.debian.org/misc/README.mirrors
+# for further information on Debian mirrors locations.
+#DEBIAN_MIRROR="ftp.de.debian.org"
+
+# Which distribution we should use.
+#DEBIAN_DISTRIB="woody"
+
+# which modules should we use.
+#DEBIAN_COMPONENTS="main contrib non-free"
+

@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+  <title>Community Linux Toubleshooting</title>
+  <style rel="stylesheet" type="text/css"> 
+
+	html {
+	background-color: white;
+	font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+	font-size: 1.2em;
+	line-height: 1.25em;
+	margin: 0 4% 0 4%;
+	}
+
+	body {
+	border: 10px solid #fff;
+	margin:0;
+	padding:0;
+	font-size: 1.2em;
+	background: #fff;
+	font-size: 1.6em;
+	}
+
+	/* Links */
+
+	a:link { border-bottom: 1px dotted #ccc; text-decoration: none; color: #204d92; }
+	a:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+	a:active {  border-bottom:1px dotted #ccc; text-decoration: underline; color: #204d92; }
+	a:visited { border-bottom:1px dotted #ccc; text-decoration: none; color: #204d92; }
+	a:visited:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+ 
+	.logo a:link,
+	.logo a:hover,
+	.logo a:visited { border-bottom: none; }
+
+	.mainlinks a:link { border-bottom: 1px dotted #ddd; text-decoration: none; color: #eee; }
+	.mainlinks a:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+	.mainlinks a:active { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+	.mainlinks a:visited { border-bottom:1px dotted #ddd; text-decoration: none; color: white; }
+	.mainlinks a:visited:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+
+	/* User interface styles */
+
+	#header {
+	margin:0;
+	padding: 0.5em;
+	background: #204D8C url(img/header-background.png);
+	text-align: left;
+	}
+
+	.logo {
+	padding: 0;
+	/* For text only logo */
+	font-size: 1.4em;
+	line-height: 1em;
+	font-weight: bold;
+	}
+
+	.logo img {
+	vertical-align: middle;
+	padding-right: 1em;
+	}
+
+	.logo a {
+	color: #fff;
+	text-decoration: none;
+	}
+
+	p {
+	line-height:1.5em;
+	font-size: 1.2em;
+	}
+
+	h1 { 
+		margin-bottom: 0;
+		line-height: 1.9em; }
+	h2 { 
+		margin-top: 0;
+		line-height: 1.7em; }
+
+	#content {
+	clear:both;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-bottom: 30px;
+	border-bottom: 5px solid #eee;
+	}
+
+    .mainlinks {
+        float: right;
+        margin-top: 0.5em;
+        text-align: right;
+    }
+
+    ul.mainlinks > li {
+    border-right: 1px dotted #ddd;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline;
+    list-style: none;
+    }
+
+    ul.mainlinks > li.last,
+    ul.mainlinks > li.first {
+    border-right: none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+<table border=0 >
+<tr bgcolor=#cccccc ><td>
+<center>
+<a href=index.html>
+<font size=+5 bold=true> &nbsp;<font  color=#8800ff>Community Linux</font>
+Troubleshooting </font>
+</a>
+</center>
+
+<tr><td>
+<center>
+<p>
+<a href=install.html>[ Installation ]</a>&nbsp; &nbsp;<a href=tech.html>[ Technical Details ]</a>&nbsp; &nbsp; <a href=help.html>[ Troubleshooting ]</a>&nbsp; &nbsp;<a href=create.html>[ Create ComLin USB ]</a>
+</center>
+
+<tr background=chip.jpg><td>
+<p>&nbsp; &nbsp; Community Linux is designed to run out of the box, but in case help is needed, please  refer to the following question and answer section:
+<p>
+
+<i>What is Community Linux?</i>
+<p>
+&nbsp; &nbsp; Is a Linux hard drive less distribution derived from CentOS 6.3; It boots and runs with comparable speed as hard drive installation.
+<p>
+<i>What Languages is Community Linux available?</i>
+<p>
+&nbsp; &nbsp; It is available as many languages as Linux is available. The applications are available in as many languages as the translations for that application. Community Linux's international features are untested, please do not give feedback on it until the international version is released. Contributions are welcome.
+<p>	
+<p>
+<i>How do I download / create a new Community Linux USB drive?</i>
+<p>
+&nbsp; &nbsp; You may download ComLin from Sourceforge.net. Extract the archive, and change to its directory. For further instructions read  the <a href=create.html>Create ComLin USB</a> page.
+<p>
+<i>What hardware does in run on?</i>
+<p>
+&nbsp; &nbsp; ComLin will run on most commonly available hardware. At the time of writing, it compiled more than thee thousand  driver modules, to give access to an enormous range of hardware devices. If your hardware device is not supported, there is a large community support for solutions and/or patches.
+<p>
+<i>What do the boot time prompts mean?</i>
+<p>
+&nbsp; &nbsp; During bootup ComLin will prompt you at different stages of boot for a key press. (with a timeout) Left alone, the distro will continue booting, but by pressing the enter key, the boot process can be suspended to a shell. This can be used as a troubleshooting tool. Prompt stages:<p>
+&nbsp; &nbsp; &nbsp; &nbsp; <b>a.)</b> <i>Initrd</i> - Possible chkdisk. (*obsolete)<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <b>b.)</b> <i>Device Load</i> - For manual intervention on device load. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <b>c.)</b> <i>Before Starting X</i> - To add X dependencies / drivers.<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <b>d.)</b> <i>Before Restarting X</i> - Choice to boot or Restart X.<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <b>e.)</b> <i>Before Reboot phase</i> - Choice drop to sh to examine the system <p>
+
+&nbsp; &nbsp; <i>Initrd</i> phase for possible chkdisk. (*obsolete) At this stage, one can repair the root filesystem of the USB drive by executing check disk. (fsck). ComLin already pre-configured a shell script to do this without investigating the root drive or any other detail. The shell script is named '/sh/check.sh'  (without the quotes) Exiting this shell will continue the boot process.
+<p>
+&nbsp; &nbsp; <i>Device Load</i> phase for manual intervention on device load. At this phase, one can load a device manually, of force the final script ahead of the start script queue. Exiting this shell will continue to load the drivers, and continue boot.
+<p>
+&nbsp; &nbsp; <i>Before Starting X</i> - To add X dependencies / drivers. This checkpoint allows one to look at system state before the graphical user interface starts. It is also possible to start other graphical interfaces or load missing dependencies or needed drivers. Exiting this shell will continue to load the graphical user interface.
+<p>
+<i>What is a zombie process?</i>
+<p>
+&nbsp; &nbsp; Zombie is a process that is waiting for its parent to read its exit status. Processes in a Linux system are arranged in a parent-child hierarchy. When a parent dies before the child, it creates an orphan. When the orphan dies, there is no parent to read it's exit status, so it hangs around for some process to read it. The orphan then is re-parented by the system to the zombie collector, which reads its exit status, and voila! the zombie disappears. According to literature, a process leaving zombies behind is a bug. When we had no zombie collection, there was a lot of processes leaving zombies behind. Developers: Please take note. You can NOOP ComLin zombie collection to see what your program does.
+<p>
+<i>What support infrastructure does ComLin offer?</i>
+<p>
+&nbsp; &nbsp; Community Linux is too new for those expectations. Please help, donate, volunteer.
+<p>
+&nbsp;
+<p>
+&nbsp; Community Linux is maintained by Peter Glen. The project is funded by donations, please consider contributing. Contributions are accepted on <font color=red>Paypal;</font> account: peterglen99@gmail.com
+<p>
+
+<center>
+The 'ComLin' and 'Community Linux' names are Copyright Peter Glen.
+</center>
+
+</body>
+</html>
+

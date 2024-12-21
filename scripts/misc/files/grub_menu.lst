@@ -1,0 +1,17 @@
+timeout 5
+
+title Rescue System
+root (fd0)
+kernel /vmlinuz root=/dev/ram0 ramdisk_size=RAMSIZE init=/linuxrc rw devfs=nomount CRAMFS
+initrd /initrdfs.gz
+
+title Rescue System - load cd into RAM
+root (fd0)
+kernel /vmlinuz root=/dev/ram0 ramdisk_size=RAMSIZE init=/linuxrc rw cd_into_ram devfs=nomount CRAMFS
+initrd /initrdfs.gz
+
+title  memtest86
+root   (fd0)
+kernel /memtest.86
+
+END

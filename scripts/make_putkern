@@ -1,0 +1,42 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "----------------------------------"
+echo " Installing kernel to USB Drive "
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit
+fi
+
+comlin=`mount | grep COMLIN`
+if [ x"$comlin" == x"" ] ; then
+	echo Target COMLIN not mounted. Remove and Re-insert Jump Drive
+	exit
+fi
+
+if [ x"$1" == x"" ] ; then
+   getkey -c 5  -m "Are you sure you want to install kernel to $DDEV\" ? ctrl-c to abort " y
+
+ if [ $? != 0 ] ; then 
+	echo Aborted.
+	exit;
+ fi
+ echo
+fi
+
+# Copy kernel/boot files
+echo -n "Copying kernel files ... "
+sudo cp   _kernel/* $MCOMLIN
+sudo cp   _kernel/* $MCOMBOOT
+echo OK
+
+exit 0
+

@@ -1,0 +1,30 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## intall new packages                                                  ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. config_system
+. "$SCRIPTS"/misc/lib/lib_fail
+
+if ! [ "$PACKAGES" ]; then
+    exit 0
+fi
+
+echo "----------------------------------"
+echo "      installing new packages     "
+echo "----------------------------------"
+echo 
+echo
+
+chroot $ROOTFS /usr/bin/apt-get update
+chroot $ROOTFS /usr/bin/apt-get install $PACKAGES
+chroot $ROOTFS /usr/bin/apt-get clean
+

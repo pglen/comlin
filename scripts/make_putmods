@@ -1,0 +1,28 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "-----------------------------------------"
+echo " Putting new modules from ../comlin-mod  "
+echo "-----------------------------------------"
+echo 
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit
+fi
+
+comlin=`mount | grep $MCOMBOOT`
+if [ x"$comlin" == x"" ] ; then
+	echo Target $MCOMBOOT not mounted. Remove and reinsert Jump Drive
+	exit
+fi
+
+# Copy KERNEL MODULEs
+mkdir -p $MCOMBOOT/lib/modules/`uname -r`/
+sudo cp -a ../comlin-mod-000/*  $MCOMBOOT/lib/modules/`uname -r`/
+
+

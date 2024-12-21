@@ -1,0 +1,18 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+MCOMLIN=/media/COMLIN
+MCOMBOOT=/media/COMBOOT
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit
+fi
+
+sudo mount $DDEV $MCOMLIN
+sudo mount $DDEV2 $MCOMBOOT
+
+

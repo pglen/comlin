@@ -1,0 +1,59 @@
+#!/bin/sh
+##------------------------------------------------------------------------
+##                              
+## Copies USB image to USB drive
+##                                                                      
+## This program is free software; you can redistribute it and/or modify 
+## it under the terms of the GNU General Public License as published by 
+## the Free Software Foundation; either version 2 of the License, or    
+## (at your option) any later version.                                  
+##                                                                      
+##------------------------------------------------------------------------
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+TARG=/media/COMBOOT
+MCOMBOOT=/media/COMBOOT
+
+#echo "$MCOMBOOT"
+
+echo
+echo "----------------------------------"
+echo " Copying USB image to USB drive "
+echo " May need sudo pass ..."
+echo "----------------------------------"
+echo 
+
+# Is the hardware here? or ...
+# Make sure device is inserted
+
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit 1
+fi
+
+# Is the drive here? ... unmount it
+GREPX=`mount | grep $DDEV`
+
+#echo "grepx '"$GREPX"'" $DDEV
+
+if [ x"$GREPX" != x"" ] ; then 
+    sudo umount $DDEV   	
+fi
+
+# Is the second drive here? ... unmount it
+GREPX=`mount | grep $DDEV2`
+
+if [ x"$GREPX" != x"" ] ; then 
+    sudo umount $DDEV2   	
+fi
+
+sudo mkdir -p /mnt/COMLIN
+sudo mount $DDEV /mnt/COMLIN
+
+sudo mkdir -p /mnt/COMBOOT
+sudo mount $DDEV2 /mnt/COMBOOT
+
+echo Done Mount.
+

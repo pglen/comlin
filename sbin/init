@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# System initialization script. Responsible for moving boot binaries
+# around and linking to USB fs proper.
+#
+# There is an inherent conflict for VFAT ad ext2 capabilities. To this end
+# we keep the ext2 ram disk from initrd, and link the USB subsystem in. 
+# This also makes the system more robust for device removal / errors. 
+# Some issues remain ...
+#
+# Later versions have two partitions, an MSDOS boot and an ext2 root.  Most 
+# of the FAT issues went away, and it still boots from BIOS even on old PCs
+#
+# We switched to ext3 but the regular disk activity for the journal was 
+# crap. (constant kournalling shortens drive life) Back to ext2.
+#
+# We switched to ext4 and set journalling interval to 1 minute
+# Constant journalling now has the life expectancy of 46+ years
+
+# Remember, we are in ash, some functionality needed trimming.
+# With the new kernel we get full init, run it as such 
+
+. /sh/functions.sh
+ 
+# Tell the interpreter where the executables are (and could be)
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+# Where should all the output go (err mesages)
+#OUTPUT=/dev/stdout
+OUTPUT=/dev/null
+
+# Estabilish if we are verbose 
+grep -q '\<quiet\>' /proc/cmdline || VERBOSE=1
+
+#if test $VERBOSE -eq 1 ; then
+#    echo
+#	echo "Loading Community Linux. Please wait... "
+#    echo 
+#fi
+
+# Create the minimally expected devices
+[ -e /dev/console ] || mknod -m 0600 /dev/console c 5 1
+[ -e /dev/null ] || mknod /dev/null c 1 3
+
+if test $VERBOSE -eq 1 ; then
+    echo
+    echo
+	echo "Community Linux Version 1.0 loading, please wait ... "
+    echo
+    echo	
+fi
+
+#bash
+	
+#pivot_root . ./oldx
+
+# Note: redir takes place before chroot
+exec chroot . ./sh/startup.sh <./dev/console 2>&1 >./dev/console 
+
+#/sh/startup.sh <./dev/console 2>&1 >./dev/console 
+
+# Control should not come here; Just in case ...
+echo "OOPS, something went wrong ... dropping to shell"
+/sh/forever.sh sh
+
+# EOF
+

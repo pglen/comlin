@@ -1,0 +1,32 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## creates isolinux.cfg and copies isolinux.bin to its place            ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo "Creating isolinux.cfg .... "
+
+if [ "$CRAMFS" = "yes" ]; then
+	cat "$SCRIPTS"/misc/files/isolinux.cfg           \
+		| sed "s|RAMSIZE|$RAMSIZE|;s|CRAMFS|cramfs|" \
+		> "$ROOTFS"/isolinux/isolinux.cfg || fail
+else
+	cat "$SCRIPTS"/misc/files/isolinux.cfg     \
+		| sed "s|RAMSIZE|$RAMSIZE|;s|CRAMFS||" \
+		> "$ROOTFS"/isolinux/isolinux.cfg || fail
+fi
+
+cp "$SCRIPTS"/misc/files/isolinux.bin "$ROOTFS"/isolinux/ || fail
+cp "$SCRIPTS"/misc/files/message.txt "$ROOTFS"/isolinux/  || fail
+cp "$SCRIPTS"/misc/files/memtest86.bin $ROOTFS/isolinux/memtest.86 || fail
+
+echo

@@ -1,0 +1,79 @@
+#!/bin/sh
+###############################################################################
+##                                                                           ##
+##                            make_toritoimage                               ##
+##                                                                           ##
+## This script takes the directory structure of _initrdfs/ (which represents ##
+## the initial ramdisk initrd), gzips it and copies it on a floppy disk      ##
+## mage. Then it runs syslinux lilo and writes the floppy image to           ##
+## $ROOTFS/boot/boot.img.                                                    ##
+## The Floppy image should then be a fully functional el torito boot image.  ##                                                                  ##
+##                                                                           ##
+## This program is free software; you can redistribute it and/or modify      ##
+## it under the terms of the GNU General Public License as published by      ##
+## the Free Software Foundation; either version 2 of the License, or         ##
+## (at your option) any later version.                                       ##
+##                                                                           ##
+###############################################################################
+
+. config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo "----------------------------------"
+echo "    creating boot floppy image    " 
+echo "             syslinux             "
+echo "----------------------------------"
+echo 
+echo
+
+# this is here to override the FLOPPYSIZE parameter at runtime without
+# the need of changing the config file.
+# it's used by the utils/make_boot_disk script
+if [ "$1" = 144 -o "$1" = 288 -o "$1" = 1722 ]; then
+    FLOPPYSIZE=$1
+fi
+
+# copy zeroed and dos formatted 2.88MB floppy image file
+cp "$SCRIPTS"/misc/files/syslinux_"$FLOPPYSIZE".img.gz $TMPDIR/syslinuxfs.gz || fail
+gunzip -f $TMPDIR/syslinuxfs.gz || fail
+
+losetup /dev/loop4 $TMPDIR/syslinuxfs || fail
+mount /dev/loop4 $MOUNTPOINT || fail
+    
+if [ "$CRAMFS" = "yes" ]; then
+	cat "$SCRIPTS"/misc/files/syslinux.cfg         \
+		| sed "s|RAMSIZE|$RAMSIZE|;s|CRAMFS|cramfs|" \
+		> $MOUNTPOINT/syslinux.cfg || fail
+else
+	cat "$SCRIPTS"/misc/files/syslinux.cfg    \
+		| sed "s|RAMSIZE|$RAMSIZE|;s|CRAMFS||" \
+		> $MOUNTPOINT/syslinux.cfg || fail
+fi
+
+# copy kernel onto syslinuxfs image
+cp "$KERNEL"/vmlinuz $MOUNTPOINT || fail
+
+# copy the boot time message onto the syslinuxfs image
+cp $SCRIPTS/misc/files/message.txt $MOUNTPOINT || fail
+
+# copy memtest86 image onto syslinuxfs image
+cp "$SCRIPTS"/misc/files/memtest86.bin $MOUNTPOINT/memtest.86 || fail
+
+# umount syslinuxfs
+umount $MOUNTPOINT
+
+# set up syslinux
+"$SCRIPTS"/misc/tools/syslinux -s $TMPDIR/syslinuxfs || fail
+    
+# move compressed initrdfs onto lilofs image
+# if i move the initrdfs before the bootloader is installed 
+# the file is corupted - no idea why, maybe a bug ?
+mount /dev/loop4 $MOUNTPOINT || fail
+mv $TMPDIR/initrdfs.gz $MOUNTPOINT || fail
+umount $MOUNTPOINT
+
+losetup -d /dev/loop4
+    
+# move syslinuxfs image to BURN_THIS/boot/boot.img
+mv $TMPDIR/syslinuxfs $ROOTFS/boot/boot.img
+

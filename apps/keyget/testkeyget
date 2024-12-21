@@ -1,0 +1,9 @@
+#!/bin/bash
+
+trap "echo hello"  SIGINT
+
+keyget "Testing keyget. Press Ctrl-C to shortcut, Enter to Stop"
+
+echo "Got: $?"
+
+

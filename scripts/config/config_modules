@@ -1,0 +1,41 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## configure $ROOTFS/etc/modules                                        ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. config_system
+. "$SCRIPTS"/misc/lib/lib_fail
+
+if ! [ "$MODULES" ]; then
+    exit 0
+fi
+
+echo "----------------------------------"
+echo "      configuring modules         "
+echo "----------------------------------"
+echo 
+echo
+
+# backup the old modules
+cp $ROOTFS/etc/modules $BACKUPDIR/
+
+cat <<EOF > $ROOTFS/etc/modules
+# /etc/modules: kernel modules to load at boot time.
+#
+# This file should contain the names of kernel modules that are
+# to be loaded at boot time, one per line.  Comments begin with
+# a #, and everything on the line after them are ignored.
+EOF
+
+for i in $MODULES; do
+    echo $(echo $i | sed -e ':A; s/,/ /; t A') >> "$ROOTFS"/etc/modules
+done
+

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "----------------------------------"
+echo " Getting new modules from SRC dir "
+echo "----------------------------------"
+echo 
+
+# Make sure device is inserted
+if [ ! -b $RDDEV ] ; then
+ 	echo Insert drive into $RDDEV first
+ 	exit
+fi
+
+comlin=`mount | grep $MCOMBOOT`
+if [ x"$comlin" == x"" ] ; then
+	echo Target $MCOMBOOT not mounted. Remove and reinsert Jump Drive
+	exit
+fi
+
+# Copy KERNEL MODULES to Initrd
+
+MODROOT=initrdfs/lib/modules/`uname -r`/
+
+MODS="fs/fat/vfat.ko fs/fat/fat.ko \
+drivers/usb/storage/usb-storage.ko \
+drivers/input/mouse/psmouse.ko"
+
+mkdir -p $MODROOT/kernel
+
+cp  /lib/modules/`uname -r`/modules* $MODROOT
+
+for AA in $MODS ; do
+   cp -av /lib/modules/`uname -r`/kernel/$AA  initrdfs/lib/modules/`uname -r`/kernel
+   #ls  /lib/modules/`uname -r`/kernel/$AA
+done
+

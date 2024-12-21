@@ -1,0 +1,33 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## decompress the root system                                           ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+if [ "$COMPRESSEDFS" != "yes" -a "$CRAMFS" != "yes" ]; then
+    exit 0
+fi
+
+echo "----------------------------------"
+echo "    decompressing the rootfs      "
+echo "----------------------------------"
+echo 
+echo
+
+if test -d $ROOTFS.uncompressed; then
+    # delete the compressed root fs and move the uncompressed 
+    # one to $ROOTFS
+    rm -r $ROOTFS || fail
+    mv $ROOTFS.uncompressed $ROOTFS || fail
+fi
+
+echo

@@ -1,0 +1,32 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## configure $ROOTFS/etc/resolv.conf                                    ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+. config_system
+. "$SCRIPTS"/misc/lib/lib_fail
+
+# backup the old resolv.conf
+cp $ROOTFS/etc/resolv.conf $BACKUPDIR/
+
+echo "----------------------------------"
+echo "      configuring resolv.conf     "
+echo "----------------------------------"
+echo 
+echo
+
+echo -n > "$ROOTFS"/etc/resolv.conf
+
+for i in $NAMESERVER; do
+    echo "nameserver $i"  >> "$ROOTFS"/etc/resolv.conf
+done
+
+echo

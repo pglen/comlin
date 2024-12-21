@@ -1,0 +1,17 @@
+#!/bin/sh
+
+##########################################################################
+##                                                                      ##
+## this script dumps your keyboard map to                               ##
+## ../rootfs/etc/console-tools/default.kmap.gz                          ## 
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. config_build
+
+"$SCRIPTS"/misc/tools/dumpkeys | gzip > "$ROOTFS"/etc/console/boottime.kmap.gz

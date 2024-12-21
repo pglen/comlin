@@ -1,0 +1,38 @@
+<e><c><xxl>Installing </xxl></c></e>
+<e><c><xxl><image name=pinguin.xpm align=center> <b>Community Linux</b>.\
+<image name=pinguin.xpm align=center></xxl></c></e>
+
+<c>\
+<link name=index.pango> [ <u>Index</u> ] </link> \
+<link name=install.pango> [ <u>Installation</u> ] </link>\
+<link name=faq.pango> [ <u>Troubleshooting</u> ] </link>\
+<link name=tech.pango> [ <u>Technical Details</u> ] </link>\
+<link name=create.pango> [ <u>Create ComLin Drive</u> ] </link>\
+</c>
+
+<w><j>
+  <i>Community Linux</i> is is easy to use. It boots directly from a USB drive, and presents a graphical user interface without any user intervention. One may run applications, surf the net, administer systems without any further setup or installation procedure(s) needed.
+
+<b>Default passwords:</b>
+
+   When prompted for passwords, ComLin's default password for the initial 'user' is 'user1234' and for the 'root' user is 'admin1234' (without the quotes). One needs to change these passwords before ComLin can be deployed as a personal workstation, or connected to a network. The passwords can be changed from the command line or from a small password changing GUI presented on the desktop. You may also use your favorite password changing program.
+</w></j>
+##<image name=padlock.jpg align=center width=100 height=150>
+<b>Additional security measures:</b>
+<w><j>
+  <i>Community Linux</i> contains an encrypted folder under <i>'~/encrypted/Documents/'</i>. The folder is empty, and the initial password to the folder is '1234'. Changing the password to the folder can be done from the provided 'cryptkeeper' utility from the main panel. (icon that looks like a little padlock) <image name=padlock.gif> 
+  After changing the password to the encrypted folder, the contents of the folder will only be accessible after successfully entering the new password. ComLin contains an Industrial strength encryption, your data cannot be recovered without the password. 
+
+    Naturally, one can create new user(s) in ComLin with any of the traditional GUI tools or command line utilities like 'useradd'. However, there is no need for additional Linux system users. 
+
+<b>Single User operation:</b>
+
+   <i>Community Linux</i> deploys a single user policy, under which, several users can have private data in the 'encrypted' folder. This policy serves for simplicity, openness, and if needed, personal privacy.  No measures have been t aken to enforce the single user policy, so one is free to take advantage of the multi-user nature of Linux. Naturally, this assumes (some) system administrators knowledge, which is contrary to ComLin's original premise.
+
+ <i>Community Linux</i> is maintained by Peter Glen. The project is funded by donations, please consider contributing. Contributions are accepted on <r>Paypal;</r> account: <i>peterglen99@gmail.com</i>
+</j></w>
+
+<c>The <b>'ComLin'</b> and <b>'Community Linux'</b> names are Copyright Peter Glen.<sm>
+</sm>\
+<i>This document is displayed by the pangview utility.</i>
+</c>

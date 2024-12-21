@@ -1,0 +1,98 @@
+#!/bin/sh
+##########################################################################
+##                                                                      ##
+## assembles the gzipped initrd image                                   ##
+##                                                                      ##
+## This program is free software; you can redistribute it and/or modify ##
+## it under the terms of the GNU General Public License as published by ##
+## the Free Software Foundation; either version 2 of the License, or    ##
+## (at your option) any later version.                                  ##
+##                                                                      ##
+##########################################################################
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "----------------------------------"
+echo "        Assembling initrd         "
+echo "        May need sudo pass        "
+echo "----------------------------------"
+echo 
+
+OUTF=$TMPDIR/initrdfs
+RD=$TMPDIR/initrdfs
+
+# Clean out old
+rm -f $RD*
+
+# Create zeroed image file and make a filesystem
+echo -n Creating ${RAMSIZE} bytes holder file ...
+dd if=/dev/zero bs=1024 count=$(($RAMSIZE)) > $OUTF 2>/dev/null || fail
+#perl ./scripts/fillfile.pl $OUTF $(($RAMSIZE*1024)) 1234
+echo OK
+
+# Make file system
+echo -n Creating holder FS ...
+mke2fs -F -m0 -b1024 $OUTF 2>&1 >/dev/null || fail
+#mke2fs -F -m0  -b2048 $OUTF -L comlin >/dev/null 2>&1 || fail
+tune2fs -c0 -i0 $OUTF  >/dev/null  2>&1 || fail
+echo OK
+
+# Mount it on $MOUNTPOINT
+sudo mount -o loop $OUTF "$MOUNTPOINT" || fail
+
+# We don't need that directory
+#sudo rmdir "$MOUNTPOINT"/lost+found
+
+# copy initrdfs onto initrdfs image
+echo -n "Copying initrd fs to "$TMPDIR"/initrdfs ... "
+sudo cp -dpR $INITRDFS/* $MOUNTPOINT
+echo OK
+
+echo -n "Copying utilities ... "
+sudo cp  apps/reboot/linux_reboot "$MOUNTPOINT"/sbin
+sudo cp  apps/reboot/linux_poweroff "$MOUNTPOINT"/sbin
+sudo cp  apps/keyget/keyget "$MOUNTPOINT"/bin
+echo OK
+
+# Make sure new files are owned by root
+sudo chown -R root.root $MOUNTPOINT
+
+# See if not full
+USED=`df $MOUNTPOINT |  tail -1 | awk {'print $4'}`
+
+# Numeric
+USED2=`echo $USED | sed s/%//`
+
+# Make sure initrdfs has space
+
+#if [ $USED2 -gt 90 ] ; then
+#	echo Warninig: initrdfs almost full
+#fi
+
+if [ $USED2 -gt 98 ] ; then
+	echo ERROR: initrdfs full
+fi
+
+echo "Initrd file system usage: " $USED2 "%"
+
+sudo umount "$MOUNTPOINT"
+sudo losetup -d /dev/loop0 >/dev/null 2>&1
+
+echo -n "$RD uncompressed size: "
+ls -l  $RD | awk {'printf "%.2f MB\n", $5 / 1000000'}
+
+# Gzip it
+echo -n "Compressing $OUTF ... "
+#gzip -f $OUTF || fail
+#bzip2 -f $OUTF || fail
+#xz -1f $OUTF || fail
+#xz -0f --check=none $OUTF || fail
+
+echo "OK"
+
+echo -n "Initrdfs size: "
+ls -l $RD* | awk {'printf "%.2f MB\n", $5 / 1000000'}
+
+exit 0

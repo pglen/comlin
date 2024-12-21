@@ -1,0 +1,29 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+echo
+echo "--------------------------------------"
+echo " Getting new modules from SYS SRC dir "
+echo "--------------------------------------"
+echo 
+
+# Copy kernel files from runtime 
+# Enable this if you do not have sources and disable the source part below.
+
+echo
+echo -n "Getting Modules from " `uname -r` " ... " 
+
+# Copy modules from runtime
+mkdir -p ../comlin-mod-000
+sudo cp -a /lib/modules/`uname -r`/* ../comlin-mod-000/
+
+# Get PCI file from older kernel
+if [ -d /lib/modules/3.14.14 ] ; then
+    sudo cp -a /lib/modules/3.14.14/modules.pcimap ../comlin-mod-000/
+fi
+
+echo OK
+echo
+

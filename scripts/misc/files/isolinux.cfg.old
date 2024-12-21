@@ -1,0 +1,47 @@
+DEFAULT RescueSystem
+DISPLAY /isolinux/message.txt
+PROMPT 1
+
+LABEL RescueSystem
+    KERNEL /isolinux/vmlinuz
+    APPEND initrd=initrdfs.gz init=/linuxrc ramdisk_size=RAMSIZE root=/dev/ram0 devfs=nomount CRAMFS
+    TIMEOUT 100
+	    
+LABEL RescueSystem - load cd into RAM
+    KERNEL /isolinux/vmlinuz
+    APPEND initrd=initrdfs.gz init=/linuxrc ramdisk_size=RAMSIZE root=/dev/ram0 cd_into_ram devfs=nomount CRAMFS
+    TIMEOUT 100
+	    
+LABEL memtest86
+    KERNEL /isolinux/memtest.86
+    TIMEOUT 100
+	    
+LABEL 1
+    KERNEL /isolinux/vmlinuz
+    APPEND initrd=initrdfs.gz init=/linuxrc ramdisk_size=RAMSIZE root=/dev/ram0 devfs=nomount CRAMFS
+    TIMEOUT 100
+	    
+LABEL 2
+    KERNEL /isolinux/vmlinuz
+    APPEND initrd=initrdfs.gz init=/linuxrc ramdisk_size=RAMSIZE root=/dev/ram0 cd_into_ram devfs=nomount CRAMFS
+    TIMEOUT 100
+	    
+LABEL 1.
+    KERNEL /isolinux/vmlinuz
+    APPEND initrd=initrdfs.gz init=/linuxrc ramdisk_size=RAMSIZE root=/dev/ram0 devfs=nomount CRAMFS
+    TIMEOUT 100
+	    
+LABEL 2.
+    KERNEL /isolinux/vmlinuz
+    APPEND initrd=initrdfs.gz init=/linuxrc ramdisk_size=RAMSIZE root=/dev/ram0 cd_into_ram devfs=nomount CRAMFS
+    TIMEOUT 100
+	    
+LABEL 3
+    KERNEL /isolinux/memtest.86
+    TIMEOUT 100
+	    
+LABEL 3.
+    KERNEL /isolinux/memtest.86
+    TIMEOUT 100
+	    
+    

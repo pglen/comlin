@@ -1,0 +1,28 @@
+#!/bin/bash
+
+. ./config_build
+. "$SCRIPTS"/misc/lib/lib_fail
+
+MCOMLIN=/media/COMLIN
+MCOMBOOT=/media/COMBOOT
+
+# Make sure device is inserted
+#if [ ! -b $RDDEV ] ; then
+# 	echo Insert drive into $RDDEV first
+# 	exit
+#fi
+
+#comlin=`mount | grep COMLIN`
+#if [ x"$comlin" == x"" ] ; then
+#	echo Target COMLIN not mounted.
+#	exit
+#fi
+
+echo Syncing ...
+sync 
+
+echo Unmounting ...
+sudo umount $MCOMLIN
+sudo umount $MCOMBOOT
+echo Done.
+

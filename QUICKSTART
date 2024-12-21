@@ -1,0 +1,52 @@
+                               QUICKSTART
+
+  Unzip the archive to a directory. Make sure you unzip as root or sudo,
+so the extraction preserves permissions. (suids) Change to the newly created
+directory. (comlin/comlin-xxx [xxx being the version of the project])
+
+ Type 'make detect' (without the quotes), and follow the prompts. You may 
+need to insert your new jump drive in response to the prompts. The script 
+will establish which device is your USB jump drive.
+
+ Anything further formats drives, partitions etc .. exercise due care.
+
+  Type 'make new' to  partition and format the USB jump drive. When finished, 
+the script will prompt you to remove and reinsert the jump drive. 
+
+  Type 'make copyusb' to copy the Linux system files onto the jump drive. May
+take some time to shift several gigs of data. (Remember, it is a complete 
+system. [see Timings section for details]) When ready, type 'make syslin' 
+to install the bootable parts. 
+
+  Finally, type 'make unmount' and your jump drive is ready. 
+
+  To boot a computer from a jump drive, set the BIOS for 'USB DOS'/ Emulation, 
+and set the 'Boot Device' to the USB drive. (Different BIOS-es use different
+wordings, so follow the instructions above loosely)
+
+ Congratulations, you now have a low cost solid state computer, that works at 
+the same speed as a hard drive installation. (or faster) The USB drive is 
+safe to use in any computer, as it does not mount anyhing without explicit
+request. It does however auto mount inserted removables. (CD, DVD, USB, FW)
+
+ For the really impatient, type:
+
+  make detect  (and follow the propts)
+  su root -c "make doall"
+
+ Optionally, you can order a ready made jump drive. 
+See the SourceForge project page for details.
+
+ Timings:  (on a 3GHz AMD)
+
+ Unpacking the archive will run about 9 minutes
+ Creating the jump drive will run about 31 Minutes
+
+To create a new distro:
+
+ The pack.sh script will run about 17 minutes
+ The 'make getusb' will run about xx minutes
+
+    This project is funded by donations. Please consider donating
+    on PayPal to the account of peterglen99@gmail.com.
+

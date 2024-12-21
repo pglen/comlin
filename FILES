@@ -1,0 +1,33 @@
+                  Description of FILES
+
+apps                -- subdirectory for applications
+backup.sh           -- backup this project (system specific)
+checksum.sh         -- check files angainst sha1.sum
+config_build        -- configuration file for the build
+config_drive        -- confuration file for the USB drive
+config_system       -- confiuration file for the system (obsolete)
+CONTRIB             -- contributor list / contribution instructions
+FILES               -- this file
+gensum.sh           -- genrate sha1.sum
+HOWTO               -- Howto and troubleshooting
+HTML                -- subdirectory for applications
+docs                -- subdirectory for documentation / pango sources
+images              -- subdirectory for applications
+_kernel             -- subdirectory for kernel and map
+LICENSE             -- Re-distribution licence 
+Makefile            -- Main Makefile
+OPTIONS             -- Options description
+pack.sh             -- make distro archive
+QUICKSTART          -- Instructions for new USB system creation
+README              -- Readme for project
+sbin                -- subdirectory for applications
+scripts             -- subdirectory for scripts called by Makefile
+sh                  -- subdirectory for sys boot / shell 
+sha1.sum            -- sum file
+SUMFILE             -- sum file for sha1.sum (see notes in README)
+suidgr              -- files that need suid group bit set
+suids               -- files that need suid bit set
+syslinux            -- subdirectory for syslinux originals
+TECH                -- Technical notes
+tmp                 -- subdirectory for temp files
+_work               -- subdirectory for work related files
